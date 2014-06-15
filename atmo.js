@@ -9,7 +9,7 @@ var fnGetForecastWithString = function(sURL) {
     	if (xml.readyState === 4 && xml.status === 200) {
     	    var oJSON = JSON.parse(xml.responseText);
     	    if (!oJSON.hasOwnProperty("city")) {
-        		$("#cityText").addClass("invalid-city");
+            setInvalidCity();
         		return;
     	    }
     	    document.getElementById("pressure").innerHTML = "";
@@ -21,7 +21,7 @@ var fnGetForecastWithString = function(sURL) {
         		currentDate.setHours(currentDate.getHours() + 24 * i);
             var directionArrow = aDiffs[i] > 0 ? '\u2191' : '\u2193';
         		var color = colorForDiff(Math.abs(aDiffs[i]));
-        		$("#pressure").append("<div class='div-diff' style='background-color: rgb( " + color + ");'>" + currentDate.toDateString() + directionArrow + "</div>");
+        		$("#pressure").append("<div class='div-diff' style='background-color: rgb( " + color + ");'>" + currentDate.toDateString() + " " + directionArrow + "</div>");
     	    }
     	}
     });
@@ -56,10 +56,10 @@ var fnHandleRejection = function() {
     $('#city-button').click(function() {
     	var sCity = $("#cityText").val();
     	if (sCity && sCity !== "") {
-    	    $("#cityText").removeClass("invalid-city");
+    	    removeInvalidCity();
     	    fnShowByCity($("#cityText").val())
     	} else {
-    	    $("#cityText").addClass("invalid-city");
+    	    setInvalidCity();
     	}
     });
 };
@@ -83,3 +83,13 @@ function colorForDiff(diff) {
     }
     return [(red * 255).toFixed(0), (green * 255).toFixed(0), (blue * 255).toFixed(0)];
 };
+
+function setInvalidCity() {
+  $("#cityText").addClass("invalid-city");
+  $("#cityText").attr("placeholder", "Enter valid city");
+};
+
+function removeInvalidCity() {
+  $("#cityText").removeClass("invalid-city");
+  $("#cityText").attr("placeholder", "Enter city");
+}
