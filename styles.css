@@ -25,6 +25,9 @@ input[type='button'] {
   width: 15%;
   height: 3rem;
   font-size: 1rem;
+  -webkit-appearance: none;
+  -webkit-border-radius:0;
+  border-radius:0;
 }
 
 #content {
