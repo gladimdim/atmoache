@@ -41,7 +41,7 @@ function getPreviousDay(sURL, sTodayPressure) {
         var color = colorForDiff(Math.abs((sTodayPressure - prevPressure).toFixed(0)));
         var directionArrow = prevPressure - sTodayPressure > 0 ? '\u2193' : '\u2191';
         $(".div-diff")[0].setAttribute("style", "background-color: rgb(" + color + ")");
-        $(".div-diff")[0].innerText = currentDate.toDateString() + " " + directionArrow;
+        $(".div-diff")[0].innerText = "Today " + directionArrow;
       }
     });
     xml.open("get", sURL, true);
@@ -89,7 +89,8 @@ var fnShowByCity = function(sCity) {
 };
 
 function getPreviousDayDate() {
-  var d = new Date().setHours(-24);
+  var d = new Date();
+  d.setDate(d.getDate() - 1);
   return (d/1000).toFixed(0);
 }
 
