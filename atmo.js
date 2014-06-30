@@ -38,6 +38,7 @@ function getPreviousDay(sURL, sTodayPressure) {
       if (xml.readyState === 4 && xml.status === 200) {
         var oJSON = JSON.parse(xml.responseText);
         var prevPressure = oJSON.list[0].main.pressure;
+        console.log("yesterdays pressure: " + prevPressure);
         var color = colorForDiff(Math.abs((sTodayPressure - prevPressure).toFixed(0)));
         var directionArrow = prevPressure - sTodayPressure > 0 ? '\u2193' : '\u2191';
         $(".div-diff")[0].setAttribute("style", "background-color: rgb(" + color + ")");
@@ -90,7 +91,7 @@ var fnShowByCity = function(sCity) {
 
 function getPreviousDayDate() {
   var d = new Date();
-  d.setDate(d.getDate() - 1);
+  d.setHours(d.getHours() - 12);
   return (d/1000).toFixed(0);
 }
 
