@@ -6,6 +6,7 @@ input[type='text'] {
     background: rgba(255,255,255,0.5);
     margin: 0 0 10px 0;
     font-size: 1rem;
+    text-align: center;
 }
 
 input[type='text'].invalid-city {
@@ -38,7 +39,6 @@ input[type='button'] {
 
 .div-diff {
     text-align: center;
-    /*height: 14%;*/
     line-height: 3rem;
 }
 
@@ -58,11 +58,15 @@ input[type='button'] {
 
     .div-diff {
     	height: 20%;
-    	-webkit-text-size-adjust: 300%;
+    	/*-webkit-text-size-adjust: 300%;*/
     }
 
-    .div-city {
-    	font-size: 3rem;
+    input[type='button'] {
+      width: 50%;
+    }
+
+    input[type='text'] {
+      width: 50%;
     }
 }
 
