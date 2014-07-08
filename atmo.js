@@ -1,3 +1,32 @@
+function requestOkText(url) {
+    var request = new XMLHttpRequest();
+    var deferred = Q.defer();
+
+    request.open("GET", url, true);
+    request.onload = onload;
+    request.onerror = onerror;
+    request.onprogress = onprogress;
+    request.send();
+
+    function onload() {
+        if (request.status === 200) {
+            deferred.resolve(request.responseText);
+        } else {
+            deferred.reject(new Error("Status code was " + request.status));
+        }
+    }
+
+    function onerror() {
+        deferred.reject(new Error("Can't XHR " + JSON.stringify(url)));
+    }
+
+    function onprogress(event) {
+        deferred.notify(event.loaded / event.total);
+    }
+
+    return deferred.promise;
+}
+
 function getPreviousDayDate() {
     "use strict";
     var d = new Date();
@@ -37,34 +66,43 @@ function colorForDiff(diff) {
     return [(red * 255).toFixed(0), (green * 255).toFixed(0), (blue * 255).toFixed(0)];
 }
 
-function getForecastWithString(sURL, sPrevURL) {
+function getPreviousDay(sURL, sTodayPressure) {
     "use strict";
     var xml = new XMLHttpRequest();
-    xml.addEventListener('readystatechange', function () {
-        if (xml.readyState === 4 && xml.status === 200) {
-            var oJSON = JSON.parse(xml.responseText);
-            if (!oJSON.hasOwnProperty("city")) {
-                setInvalidCity();
-                return;
-            }
-            document.getElementById("pressure").innerHTML = "";
-            $("#city").text(oJSON.city.name);
-            var i, aDiffs = calculateDifferences(oJSON.list),
-                currentDate = new Date(),
-                directionArrow,
-                color;
-            for (i = 0; i < aDiffs.length; i = i + 1) {
-                currentDate.setHours(currentDate.getHours() + 24 * i);
-                directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
-                color = colorForDiff(Math.abs(aDiffs[i]));
-                $("#pressure").append("<div class='div-diff' style='background-color: rgb( " + color + ");'>" + currentDate.toDateString() + " " + directionArrow + "</div>");
-            }
-          getPreviousDay(sPrevURL, oJSON.list[0].pressure);
+    requestOkText(sURL).then(function(responseText) {
+        var oJSON = JSON.parse(responseText);
+        var prevPressure = oJSON.list[0].main.pressure;
+        console.log("yesterdays pressure: " + prevPressure);
+        var color = colorForDiff(Math.abs((sTodayPressure - prevPressure).toFixed(0)));
+        var directionArrow = prevPressure - sTodayPressure > 0 ? '\u2193' : '\u2191';
+        $(".div-diff")[0].setAttribute("style", "background-color: rgb(" + color + ")");
+        $(".div-diff")[0].innerText = "Today " + directionArrow;
+    });
+}
+
+function getForecastWithString(sURL, sPrevURL) {
+    "use strict";
+    requestOkText(sURL).then(function(responseText) {
+        var oJSON = JSON.parse(responseText);
+        if (!oJSON.hasOwnProperty("city")) {
+            setInvalidCity();
+            return;
         }
+        document.getElementById("pressure").innerHTML = "";
+        $("#city").text(oJSON.city.name);
+        var i, aDiffs = calculateDifferences(oJSON.list),
+            currentDate = new Date(),
+            directionArrow,
+            color;
+        for (i = 0; i < aDiffs.length; i = i + 1) {
+            currentDate.setHours(currentDate.getHours() + 24 * i);
+            directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
+            color = colorForDiff(Math.abs(aDiffs[i]));
+            $("#pressure").append("<div class='div-diff' style='background-color: rgb( " + color + ");'>" + currentDate.toDateString() + " " + directionArrow + "</div>");
+        }
+        getPreviousDay(sPrevURL, oJSON.list[0].pressure);
     });
 
-    xml.open("get", sURL, true);
-    xml.send();
 };
 
 function showByGeolocation(geolocation) {
@@ -73,27 +111,6 @@ function showByGeolocation(geolocation) {
         sPrevURL = "http://api.openweathermap.org/data/2.5/history/city?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=1" + "&start=" + getPreviousDayDate() + "&type=hour";
     getForecastWithString(sURL, sPrevURL);
 };
-
-function getPreviousDay(sURL, sTodayPressure) {
-    "use strict";
-    var xml = new XMLHttpRequest();
-
-    xml.addEventListener('readystatechange', function() {
-      if (xml.readyState === 4 && xml.status === 200) {
-        var oJSON = JSON.parse(xml.responseText);
-        var prevPressure = oJSON.list[0].main.pressure;
-        console.log("yesterdays pressure: " + prevPressure);
-        var color = colorForDiff(Math.abs((sTodayPressure - prevPressure).toFixed(0)));
-        var directionArrow = prevPressure - sTodayPressure > 0 ? '\u2193' : '\u2191';
-        $(".div-diff")[0].setAttribute("style", "background-color: rgb(" + color + ")");
-        $(".div-diff")[0].innerText = "Today " + directionArrow;
-      }
-    });
-    xml.open("get", sURL, true);
-    xml.send();
-};
-
-
 
 function showGraph() {
     if (navigator.geolocation) {
