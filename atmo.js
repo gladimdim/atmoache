@@ -88,9 +88,21 @@ function getPreviousDay(sURL, sTodayPressure) {
     });
 }
 
+function showProgressBar() {
+    var dPressure = $("#pressure");
+    $("#progressSection").show();
+    /*dPressure.append("<div id='progressSection'>" +
+        "<div id='progressText'>Getting pressure for your location</div>" +
+        "<progress id='progressbar'></progress>" +
+        "</div>");*/
+}
+
+function hideProgressBar() {
+    $("#progressSection").hide();
+}
+
 function getForecastWithString(sURL, sPrevURL) {
     "use strict";
-    //showProgressInfo();
     requestOkText(sURL).then(function (responseText) {
         var oJSON = JSON.parse(responseText),
             i,
@@ -102,9 +114,7 @@ function getForecastWithString(sURL, sPrevURL) {
             setInvalidCity();
             return;
         }
-        /*global document */
-        document.getElementById("pressure").innerHTML = "";
-        $("#city").text(oJSON.city.name);
+        $("#city").show().text(oJSON.city.name);
         aDiffs = calculateDifferences(oJSON.list);
         for (i = 0; i < aDiffs.length; i = i + 1) {
             currentDate.setHours(currentDate.getHours() + 24 * i);
@@ -114,8 +124,12 @@ function getForecastWithString(sURL, sPrevURL) {
         }
         getPreviousDay(sPrevURL, oJSON.list[0].pressure);
     }).catch(function (error) {
-        document.getElementById("pressure").innerHTML = "Failed to get data from http://www.openweathermap.org site." + error;
-    });
+        $("#city").hide();
+        $("#pressure").text("Failed to get data from http://www.openweathermap.org site.");
+        console.log("Error while getting data: " + error);
+    }).finally(function () {
+        hideProgressBar();
+    }).done();
 }
 
 function showByGeolocation(geolocation) {
@@ -141,10 +155,12 @@ function showByCity(sCity) {
 function handleRejection() {
     "use strict";
     $("#cityForm").show();
+    hideProgressBar();
     $('#city-button').click(function () {
         var sCity = $("#cityText").val();
         if (sCity && sCity !== "") {
             removeInvalidCity();
+            showProgressBar();
             showByCity($("#cityText").val());
         } else {
             setInvalidCity();
@@ -155,6 +171,7 @@ function handleRejection() {
 function showGraph() {
     "use strict";
     /*global navigator */
+    showProgressBar();
     if (navigator.geolocation) {
         $("#cityForm").hide();
         navigator.geolocation.getCurrentPosition(showByGeolocation, handleRejection);

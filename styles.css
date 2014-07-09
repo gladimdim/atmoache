@@ -35,6 +35,7 @@ input[type='button'] {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 100%;
   height: 100%;
+  text-align: center;
 }
 
 .div-diff {
@@ -45,10 +46,20 @@ input[type='button'] {
 .div-city {
     text-align:center;
     font-weight: bold;
+    padding: 1rem;
+    display: none;
 }
 
 #cityForm {
     text-align: center;
+}
+
+#pressure {
+    padding-bottom: 1rem;
+}
+
+#progressSection {
+    display: none;
 }
 
 @media screen and (max-device-width: 480px) {
@@ -58,7 +69,6 @@ input[type='button'] {
 
     .div-diff {
     	height: 20%;
-    	/*-webkit-text-size-adjust: 300%;*/
     }
 
     input[type='button'] {
@@ -74,4 +84,8 @@ input[type='button'] {
   font-size: 0.75rem;
   text-align: right;
   border-top: 1px solid black;
+}
+
+progress:not([value]) {
+
 }
