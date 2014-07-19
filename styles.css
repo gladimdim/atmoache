@@ -47,7 +47,6 @@ input[type='button'] {
     text-align:center;
     font-weight: bold;
     padding: 1rem;
-    display: none;
 }
 
 #cityForm {

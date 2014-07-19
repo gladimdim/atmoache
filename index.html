@@ -1,27 +1,31 @@
 <meta name="viewport" content="width=device-width" />
-<html>
+<html ng-app="atmoapp">
 <head>
 <link rel="stylesheet" type="text/css" href="./styles.css"/>
 <script src="https://code.jquery.com/jquery-2.1.0.min.js">
 </script>
-<script src="./q.min.js">
-</script>
-<script src="./atmo.js">
-</script>
+<script src="./q.min.js"></script>
+<script src="./angular.min.js"></script>
+<script src="./atmoapp/main.js"></script>
 </head>
-<body onload='showGraph()' >
-  <div id='content'>
-    <div id='cityForm'>
-      <input type='text' id='cityText' placeholder='Type city name'></input>
-      <input type='button' id='city-button' value='Get atmo graphic'></input>
-    </div>
-    <div id='city' class='div-city'></div>
-    <div id="pressure">
-        <div id='progressSection'>
-            <div id='progressText'>Getting pressure for your location</div>
-            <progress id='progressbar'></progress>
+<body>
+    <div id='content' ng-controller="PressureController">
+        <div id='cityForm'>
+          <input type='text' id='cityText' placeholder='Type city name' ng-model="cityName"></input>
+          <button ng-click="getAtmoClicked()">Get Atmo Graph</button>
         </div>
-    </div>
+        <div id='city' class='div-city'>
+            {{info.cityName}}
+        </div>
+        <div id="pressure">
+            <div ng-repeat="pressure in pressures" ng-style='pressure.colorStyle' class='div-diff'>
+                {{pressure.text}} {{pressure.up}}
+            </div>
+            <div id='progressSection'>
+                <div id='progressText'>Getting pressure for your location</div>
+                <progress id='progressbar'></progress>
+            </div>
+        </div>
     <div class='contacts'>
       Uses <a href='http://www.openweathermap.org'>openweathermap.org</a> API. For contacts: dmytro.gladkyi at gmail dot com
     </div>
