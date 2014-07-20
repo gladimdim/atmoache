@@ -2,15 +2,13 @@
 <html ng-app="atmoapp">
 <head>
 <link rel="stylesheet" type="text/css" href="./styles.css"/>
-<script src="https://code.jquery.com/jquery-2.1.0.min.js">
-</script>
 <script src="./q.min.js"></script>
 <script src="./angular.min.js"></script>
 <script src="./atmoapp/main.js"></script>
 </head>
 <body>
     <div id='content' ng-controller="PressureController">
-        <div id='cityForm'>
+        <div id='cityForm' ng-show='showCity'>
           <input type='text' id='cityText' placeholder='Type city name' ng-model="cityName"></input>
           <button ng-click="getAtmoClicked()">Get Atmo Graph</button>
         </div>

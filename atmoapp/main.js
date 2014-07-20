@@ -6,6 +6,7 @@ app.controller("PressureController", function($scope) {
     $scope.info = {
         cityName: null
     };
+    $scope.showCity = false;
 
     $scope.getAtmoClicked = function() {
         console.log($scope.cityName);
@@ -142,9 +143,9 @@ app.controller("PressureController", function($scope) {
                 });
             //    $("#pressure").append("<div class='div-diff' style='background-color: rgb( " + color + ");'>" + currentDate.toDateString() + " " + directionArrow + "</div>");
             }
-            getPreviousDay(sPrevURL, oJSON.list[0].pressure);
+            /*TODO weather forecast is not precise. Always red status for today :(*/
+            //getPreviousDay(sPrevURL, oJSON.list[0].pressure);
         }).catch(function (error) {
-            $("#city").hide();
             console.log("Error while getting data: " + error);
         }).finally(function () {
             //hideProgressBar();
@@ -160,14 +161,15 @@ app.controller("PressureController", function($scope) {
 
     function handleRejection() {
         "use strict";
-        $("#cityForm").show();
+        $scope.$apply(function() {
+            $scope.showCity = true;
+        });
     };
 
     function showGraph() {
         "use strict";
         /*global navigator */
         if (navigator.geolocation) {
-            $("#cityForm").hide();
             navigator.geolocation.getCurrentPosition(showByGeolocation,
                 handleRejection,
                 {
