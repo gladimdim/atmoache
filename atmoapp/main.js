@@ -168,7 +168,13 @@ app.controller("PressureController", function($scope) {
         /*global navigator */
         if (navigator.geolocation) {
             $("#cityForm").hide();
-            navigator.geolocation.getCurrentPosition(showByGeolocation, handleRejection);
+            navigator.geolocation.getCurrentPosition(showByGeolocation,
+                handleRejection,
+                {
+                    enableHighAccuracy: true,
+                    timeout : 5000
+                }
+            );
         } else {
             console.log("nope");
         }
