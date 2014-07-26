@@ -9,10 +9,12 @@
 <body>
     <div id='content' ng-controller="PressureController">
         <div id='cityForm' ng-show='showCity'>
-          <input type='text' id='cityText' placeholder='Type city name' ng-model="cityName"></input>
+          <input type='text' id='cityText' placeholder='Type city name'
+            ng-model="cityName" ng-class="invalidCity">
+          </input>
           <button ng-click="getAtmoClicked()">Get Atmo Graph</button>
         </div>
-        <div id='city' class='div-city'>
+        <div id='city' class='div-city' ng-show="info.cityName">
             {{info.cityName}}
         </div>
         <div id="pressure">

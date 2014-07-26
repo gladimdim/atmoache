@@ -1,22 +1,26 @@
 var app = angular.module("atmoapp", []);
 
 app.controller("PressureController", function($scope) {
+    var that = this;
     $scope.pressures = [];
-
+    $scope.invalidCity = "";
     $scope.info = {
         cityName: null
     };
     $scope.showCity = false;
 
     $scope.getAtmoClicked = function() {
-        console.log($scope.cityName);
         $scope.pressures = [];
         if ($scope.cityName && $scope.cityName !== "") {
             showByCity($scope.cityName);
+        } else  {
+            setInvalidCity();
         }
-        else  {
+    };
 
-        }
+    function setInvalidCity() {
+        $scope.invalidCity = "invalid-city";
+        $scope.info.cityName = "";
     };
 
     function requestOkText(url) {
@@ -87,27 +91,27 @@ app.controller("PressureController", function($scope) {
 
     function getForecastWithString(sURL, sPrevURL) {
         "use strict";
-        requestOkText(sURL).then(function (responseText) {
-            var oJSON = JSON.parse(responseText),
-                i,
-                aDiffs,
-                currentDate = new Date(),
-                directionArrow,
-                color,
-                aDates;
-            if (!oJSON.hasOwnProperty("city")) {
-                setInvalidCity();
-                return;
-            }
-            $scope.$apply(function() {
+            requestOkText(sURL).then(function (responseText) {
+                var oJSON = JSON.parse(responseText),
+                    i,
+                    aDiffs,
+                    currentDate = new Date(),
+                    directionArrow,
+                    color,
+                    aDates;
+                if (oJSON.hasOwnProperty("city")) {
+                    $scope.invalidCity = "";
+                } else {
+                    setInvalidCity();
+                    $scope.$digest();
+                    return;
+                }
                 $scope.info.cityName = oJSON.city.name;
-            });
-            aDiffs = calculateDifferences(oJSON.list);
-            aDates = getDatesFromResponse(oJSON.list);
-            for (i = 0; i < aDiffs.length; i = i + 1) {
-                directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
-                color = colorForDiff(Math.abs(aDiffs[i]));
-                $scope.$apply(function() {
+                aDiffs = calculateDifferences(oJSON.list);
+                aDates = getDatesFromResponse(oJSON.list);
+                for (i = 0; i < aDiffs.length; i = i + 1) {
+                    directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
+                    color = colorForDiff(Math.abs(aDiffs[i]));
                     $scope.pressures.push({
                         text: aDates[i] * 1000,
                         up: directionArrow,
@@ -115,14 +119,14 @@ app.controller("PressureController", function($scope) {
                             'background-color': "rgb(" + color + ")"
                         }
                     });
-                });
-            //    $("#pressure").append("<div class='div-diff' style='background-color: rgb( " + color + ");'>" + currentDate.toDateString() + " " + directionArrow + "</div>");
-            }
-        }).catch(function (error) {
-            console.log("Error while getting data: " + error);
-        }).finally(function () {
-            //hideProgressBar();
-        }).done();
+                }
+                $scope.$digest();
+            }).catch(function (error) {
+                console.log("Error while getting data: " + error);
+            }).finally(function () {
+                //hideProgressBar();
+            }).done();
+
     };
 
     function showByGeolocation(geolocation) {
@@ -142,7 +146,8 @@ app.controller("PressureController", function($scope) {
         "use strict";
         /*global navigator */
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showByGeolocation,
+            navigator.geolocation.getCurrentPosition(
+                showByGeolocation,
                 handleRejection,
                 {
                     enableHighAccuracy: true,
@@ -150,7 +155,7 @@ app.controller("PressureController", function($scope) {
                 }
             );
         } else {
-            console.log("nope");
+            handleRejection();
         }
     };
 
