@@ -1,0 +1,16 @@
+{
+    "version": "0.1",
+    "name": "Atmoache",
+    "description": "Atmoache - monitor atmosphere pressure changes.",
+    "launch_path": "/index.html",
+    "icons": {
+        "128": "/favicon.ico"
+    },
+    "developer": {
+        "name": "Dmytro Gladkyi",
+        "url": "http://atmoache.me"
+    },
+    "installs_allowed_from": ["*"],
+    "default_locale": "en",
+    "appcache_path": "/offline.appcache"
+}
