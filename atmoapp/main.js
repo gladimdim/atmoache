@@ -8,10 +8,12 @@ app.controller("PressureController", function($scope) {
         cityName: null
     };
     $scope.showCity = false;
+    $scope.showProgress = true;
 
     $scope.getAtmoClicked = function() {
         $scope.pressures = [];
         $scope.info.cityName = null;
+        showProgressBar();
         if ($scope.cityName && $scope.cityName !== "") {
             showByCity($scope.cityName);
         } else  {
@@ -21,7 +23,7 @@ app.controller("PressureController", function($scope) {
 
     function setInvalidCity() {
         $scope.invalidCity = "invalid-city";
-        $scope.info.cityName = "";
+        $scope.info.cityName = null;
     };
 
     function requestOkText(url) {
@@ -67,7 +69,6 @@ app.controller("PressureController", function($scope) {
 
     function getDatesFromResponse(oResponse) {
         var a = [], i = 0;
-
         for (i = 0; i < oResponse.length; i = i + 1) {
             a.push(oResponse[i].dt);
         }
@@ -88,6 +89,18 @@ app.controller("PressureController", function($scope) {
             blue = blue - (blue - 0.1216) * diff / 20;
         }
         return [(red * 255).toFixed(0), (green * 255).toFixed(0), (blue * 255).toFixed(0)];
+    };
+
+    function showProgressBar() {
+        $scope.$apply(function () {
+            $scope.showProgress = true;
+        });
+    };
+
+    function hideProgressBar() {
+        $scope.$apply(function() {
+            $scope.showProgress = false;
+        });
     };
 
     function getForecastWithString(sURL, sPrevURL) {
@@ -125,7 +138,7 @@ app.controller("PressureController", function($scope) {
         }).catch(function (error) {
             console.log("Error while getting data: " + error);
         }).finally(function () {
-            //hideProgressBar();
+            hideProgressBar();
         }).done();
     };
 
@@ -140,6 +153,7 @@ app.controller("PressureController", function($scope) {
         $scope.$apply(function() {
             $scope.showCity = true;
         });
+        hideProgressBar();
     };
 
     function showGraph() {
@@ -161,6 +175,7 @@ app.controller("PressureController", function($scope) {
 
     function showByCity(sCity) {
         "use strict";
+        showProgressBar();
         var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + sCity + "&cnt=7&mode=json";
         getForecastWithString(sURL);
     };
