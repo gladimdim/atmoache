@@ -11,6 +11,7 @@ app.controller("PressureController", function($scope) {
 
     $scope.getAtmoClicked = function() {
         $scope.pressures = [];
+        $scope.info.cityName = null;
         if ($scope.cityName && $scope.cityName !== "") {
             showByCity($scope.cityName);
         } else  {
@@ -91,42 +92,41 @@ app.controller("PressureController", function($scope) {
 
     function getForecastWithString(sURL, sPrevURL) {
         "use strict";
-            requestOkText(sURL).then(function (responseText) {
-                var oJSON = JSON.parse(responseText),
-                    i,
-                    aDiffs,
-                    currentDate = new Date(),
-                    directionArrow,
-                    color,
-                    aDates;
-                if (oJSON.hasOwnProperty("city")) {
-                    $scope.invalidCity = "";
-                } else {
-                    setInvalidCity();
-                    $scope.$digest();
-                    return;
-                }
-                $scope.info.cityName = oJSON.city.name;
-                aDiffs = calculateDifferences(oJSON.list);
-                aDates = getDatesFromResponse(oJSON.list);
-                for (i = 0; i < aDiffs.length; i = i + 1) {
-                    directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
-                    color = colorForDiff(Math.abs(aDiffs[i]));
-                    $scope.pressures.push({
-                        text: aDates[i] * 1000,
-                        up: directionArrow,
-                        colorStyle: {
-                            'background-color': "rgb(" + color + ")"
-                        }
-                    });
-                }
+        requestOkText(sURL).then(function (responseText) {
+            var oJSON = JSON.parse(responseText),
+                i,
+                aDiffs,
+                currentDate = new Date(),
+                directionArrow,
+                color,
+                aDates;
+            if (oJSON.hasOwnProperty("city")) {
+                $scope.invalidCity = "";
+            } else {
+                setInvalidCity();
                 $scope.$digest();
-            }).catch(function (error) {
-                console.log("Error while getting data: " + error);
-            }).finally(function () {
-                //hideProgressBar();
-            }).done();
-
+                return;
+            }
+            $scope.info.cityName = oJSON.city.name;
+            aDiffs = calculateDifferences(oJSON.list);
+            aDates = getDatesFromResponse(oJSON.list);
+            for (i = 0; i < aDiffs.length; i = i + 1) {
+                directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
+                color = colorForDiff(Math.abs(aDiffs[i]));
+                $scope.pressures.push({
+                    text: aDates[i] * 1000,
+                    up: directionArrow,
+                    colorStyle: {
+                        'background-color': "rgb(" + color + ")"
+                    }
+                });
+            }
+            $scope.$digest();
+        }).catch(function (error) {
+            console.log("Error while getting data: " + error);
+        }).finally(function () {
+            //hideProgressBar();
+        }).done();
     };
 
     function showByGeolocation(geolocation) {

@@ -15,7 +15,7 @@
           <button ng-click="getAtmoClicked()">Get Atmo Graph</button>
         </div>
         <div id='city' class='div-city' ng-show="info.cityName">
-            {{info.cityName}}
+            Showing pressure for: {{info.cityName}}
         </div>
         <div id="pressure">
             <div ng-repeat="pressure in pressures" ng-style='pressure.colorStyle' class='div-diff'>
