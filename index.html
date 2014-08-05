@@ -1,13 +1,14 @@
 <meta name="viewport" content="width=device-width" />
 <html ng-app="atmoapp" manifest="offline.appcache">
 <head>
+  <title>Graph for atmospheric pressure changes</title>
 <link rel="stylesheet" type="text/css" href="./styles.css"/>
 <script src="./q.min.js"></script>
 <script src="./angular.min.js"></script>
 <script src="./atmoapp/main.js"></script>
 </head>
 <body>
-    <div id='content' ng-controller="PressureController">
+    <div id='content' ng-controller="PressureController" ng-cloak>
         <div id='cityForm' ng-show='showCity'>
           <input type='text' id='cityText' placeholder='Type city name'
             ng-model="cityName" ng-class="invalidCity">
