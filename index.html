@@ -18,6 +18,7 @@
         <div id='city' class='div-city' ng-show="info.cityName">
             Showing pressure for: {{info.cityName}}
         </div>
+        <button id="install-ff-button" ng-click='installMoz()' ng-show="showInstallButton">Install App</button>
         <div id="pressure">
             <div ng-repeat="pressure in pressures" ng-style='pressure.colorStyle' class='div-diff'>
                 {{pressure.text | date: "MMMM EEE d"}} {{pressure.up}}

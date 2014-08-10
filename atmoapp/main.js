@@ -1,6 +1,7 @@
 var app = angular.module("atmoapp", []);
 
 app.controller("PressureController", function($scope) {
+    var manifest_url = location.origin + "/manifest.webapp";
     var that = this;
     $scope.pressures = [];
     $scope.invalidCity = "";
@@ -9,6 +10,16 @@ app.controller("PressureController", function($scope) {
     };
     $scope.showCity = false;
     $scope.showProgress = true;
+    $scope.showInstallButton = false;
+    if ('mozApps' in navigator) {
+      var installCheck = navigator.mozApps.checkInstalled(manifest_url);
+      installCheck.onsuccess = function() {
+        if (installCheck.result) {
+          $scope.showInstallButton = !installCheck.result;
+        }
+      };
+      $scope.showInstallButton = true;
+    }
 
     $scope.getAtmoClicked = function() {
         $scope.pressures = [];
@@ -20,6 +31,17 @@ app.controller("PressureController", function($scope) {
             setInvalidCity();
         }
     };
+
+    $scope.installMoz = function () {
+      alert(manifest_url);
+      var installLocFind = navigator.mozApps.install(manifest_url);
+      installLocFind.onsuccess = function(data) {
+        $scope.showInstallButton = false;
+      };
+      installLocFind.onerror = function() {
+        alert(installLocFind.error.name);
+      };
+    }
 
     function setInvalidCity() {
         $scope.invalidCity = "invalid-city";
