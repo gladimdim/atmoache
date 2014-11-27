@@ -24,24 +24,25 @@ var CommentList = React.createClass({
 
 var Comment = React.createClass({
     render: function() {
-	return (
-	    <div className="comment">
-		<h2 className="commentAuthor">
-		{this.props.author}
-	        </h2>
-		{converter.makeHtml(this.props.children.toString())}
-	    </div>
-	);
+    	return (
+    	    <div className="comment">
+    		<h2 className="commentAuthor">
+    		{this.props.text}
+    	        </h2>
+            {this.props.up}
+    		{converter.makeHtml(this.props.children.toString())}
+    	    </div>
+    	);
     }
 });
 
-var CommentForm = React.createClass({
+var CityForm = React.createClass({
     render: function() {
-	return (
-	    <div className="commentForm">
-		Hello, World! I am CommentForm
-	    </div>
-	);
+    	return (
+    	    <div className="commentForm">
+    		Hello, World! I am CommentForm
+    	    </div>
+    	);
     }
 });
 
@@ -49,50 +50,16 @@ var CommentBox = React.createClass({
     getInitialState: function() {
 	return {data: []};
     },
-    componentDidMount: function() {
-	showGraph();
-    },
     render: function() {
-	return (
-		<div className = 'commentBox'>
-		<h1> Comments </h1>
-		<CommentList data={this.state.data}/>
-		<CommentForm/>
-		</div>
-	);
+    	return (
+    		<div className = 'commentBox'>
+    		<CityForm/>
+    		<h1> Comments </h1>
+    		<CommentList data={this.props.data}/>
+
+    		</div>
+    	);
     }
 });
 
-React.render(<CommentBox url="comments.json"/>,
-	     document.getElementById("content")
-);
-
-function handleRejection() {
-    console.log('rejected geolocation');
-};
-
-
-
-function showByGeolocation(geolocation) {
-    "use strict";
-    var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=7&mode=json";
-//        getForecastWithString(sURL);
-    console.log("showed url: " + sURL);
-};
-
-function showGraph() {
-    "use strict";
-    /*global navigator */
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            showByGeolocation,
-            handleRejection,
-            {
-                enableHighAccuracy: true,
-                timeout : 5000
-            }
-        );
-    } else {
-        handleRejection();
-    }
-};
+showGraph();
