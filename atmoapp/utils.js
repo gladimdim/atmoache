@@ -1,5 +1,7 @@
-define(["atmoapp/main"], function(atmoapp) {
-    function getForecastWithString(sURL, sPrevURL) {
+define(function (){
+    var reactControl;
+
+    function getForecastWithString (sURL, sPrevURL) {
         requestOkText(sURL).then(function (responseText) {
             var oJSON = JSON.parse(responseText),
             i,
@@ -24,7 +26,7 @@ define(["atmoapp/main"], function(atmoapp) {
                 });
             }
 
-            React.render(<this.reactControl data={finalArray}/>,
+            React.render(<MainContent data={finalArray}/>,
                 document.getElementById("content")
             );
         }).catch(function (error) {
@@ -39,8 +41,6 @@ define(["atmoapp/main"], function(atmoapp) {
         showByCity("Kiev");
     };
 
-
-
     function showByGeolocation(geolocation) {
         var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=7&mode=json";
         getForecastWithString(sURL);
@@ -52,8 +52,9 @@ define(["atmoapp/main"], function(atmoapp) {
         getForecastWithString(sURL);
     };
 
-    function showGraph(reactControl) {
-        this.reactControl = reactControl;
+    var showGraph = function(reactCon) {
+        reactControl = reactCon;
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 showByGeolocation,
@@ -67,7 +68,6 @@ define(["atmoapp/main"], function(atmoapp) {
             handleRejection();
         }
     };
-
 
     function requestOkText(url) {
         var request = new XMLHttpRequest(),
@@ -129,7 +129,11 @@ define(["atmoapp/main"], function(atmoapp) {
         return a;
     };
 
-    return {
-        showGraph: showGraph
-    }
+    return function(){
+        return {
+            showGraph: showGraph,
+            check: true
+        }
+    };
+
 });

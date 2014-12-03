@@ -45,7 +45,7 @@ define(function (require) {
         }
     });
 
-    var MainContent = React.createClass({
+    this.MainContent = React.createClass({
         getInitialState: function() {
         return {data: []};
         },
@@ -60,8 +60,7 @@ define(function (require) {
             );
         }
     });
-
-    Utils.showGraph(DaysList);
-
+    
+    var utils = new Utils();
+    utils.showGraph();
 });
-
