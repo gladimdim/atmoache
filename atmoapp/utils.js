@@ -18,7 +18,7 @@ define(function (){
                 directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
                 color = colorForDiff(Math.abs(aDiffs[i]));
                 finalArray.push({
-                    text: aDates[i] * 1000,
+                    date: aDates[i] * 1000,
                     up: directionArrow,
                     colorStyle: {
                         'background-color': "rgb(" + color + ")"
@@ -132,7 +132,8 @@ define(function (){
     return function(){
         return {
             showGraph: showGraph,
-            check: true
+            check: true,
+            showByCity: showByCity
         }
     };
 

@@ -1,16 +1,17 @@
 define(function (require) {
     var Utils = require("atmoapp/utils");
+    var utils = new Utils();
     var data = [
-        {author: "Pete Hunt", text: "This is one comment"},
-        {author: "Jordan Walke", text: "This is *another* comment"}
     ];
 
     var DaysList = React.createClass({
         render: function() {
             var commentNodes = this.props.data.map(function (comment) {
+                var date = new Date(comment.date);
+
                 return (
-                <PressureDay author={comment.author}>
-                    {comment.text}
+                <PressureDay data={comment} date={date}>
+
                 </PressureDay>
                 );
             });
@@ -25,27 +26,28 @@ define(function (require) {
     var PressureDay = React.createClass({
         render: function() {
             return (
-                <div className="pressureDay">
-                    <h2 className="commentAuthor">
-                        {this.props.text}
-                    </h2>
-                    {this.props.up}
+                <div className="pressureDay div-diff" style={this.props.data.colorStyle}>
+                    {this.props.date.toLocaleDateString()} {this.props.data.up}
                 </div>
             );
         }
     });
 
     var CityForm = React.createClass({
+        handlePress: function() {
+
+        },
         render: function() {
             return (
-                <div className="commentForm">
-                Hello, World! I am CommentForm
+                <div className="cityForm">
+                <input type="text"/>
+                <button onClick={utils.showByCity("Moscow")}>Get Graph</button>
                 </div>
             );
         }
     });
 
-    this.MainContent = React.createClass({
+    MainContent = React.createClass({
         getInitialState: function() {
         return {data: []};
         },
@@ -53,14 +55,13 @@ define(function (require) {
             return (
                 <div className = 'MainContent'>
                 <CityForm/>
-                <h1> Comments </h1>
                 <DaysList data={this.props.data}/>
 
                 </div>
             );
         }
     });
-    
-    var utils = new Utils();
+
+
     utils.showGraph();
 });
