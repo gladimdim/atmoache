@@ -1,7 +1,7 @@
 var app = angular.module("atmoapp", []);
 
 app.controller("PressureController", function($scope) {
-    var manifest_url = location.origin + "/manifest.webapp";
+    var manifest_url = location.origin + "/atmoache/manifest.webapp";
     var that = this;
     $scope.pressures = [];
     $scope.invalidCity = "";
