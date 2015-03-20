@@ -10,7 +10,6 @@
         "url": "http://www.atmoache.me"
     },
     "installs_allowed_from": ["*"],
-    "launch_path": "/atmoache/index.html",
     "default_locale": "en",
     "appcache_path": "/offline.appcache"
 }
