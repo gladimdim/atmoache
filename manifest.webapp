@@ -9,6 +9,7 @@
         "name": "Dmytro Gladkyi",
         "url": "http://www.atmoache.me"
     },
+    "launch_path": "/index.html",
     "installs_allowed_from": ["*"],
     "default_locale": "en",
     "appcache_path": "/offline.appcache"
