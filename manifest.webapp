@@ -2,7 +2,6 @@
     "version": "0.1",
     "name": "Atmoache",
     "description": "Atmoache - monitor atmosphere pressure changes.",
-    "launch_path": "/index.html",
     "icons": {
         "128": "/favicon.ico"
     },
