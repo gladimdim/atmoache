@@ -168,6 +168,7 @@ app.controller("PressureController", function($scope) {
         "use strict";
         var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=7&mode=json";
         getForecastWithString(sURL);
+        $scope.showCity = true;
     };
 
     function handleRejection() {
