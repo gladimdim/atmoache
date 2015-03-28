@@ -34,14 +34,17 @@ define(function (require) {
     });
 
     var CityForm = React.createClass({
-        handlePress: function() {
-
+        handleClick: function(e) {
+            utils.showByCity(this.props.city);
+        },
+        handleCityChange: function(e) {
+            this.props.city = e.target.value;
         },
         render: function() {
             return (
                 <div className="cityForm">
-                <input type="text"/>
-                <button onClick={utils.showByCity("Moscow")}>Get Graph</button>
+                <input type="text" onChange={this.handleCityChange}>{this.props.city}</input>
+                <button onClick={this.handleClick}>Get Graph</button>
                 </div>
             );
         }
@@ -49,7 +52,7 @@ define(function (require) {
 
     MainContent = React.createClass({
         getInitialState: function() {
-        return {data: []};
+            return {data: [], city: ""};
         },
         render: function() {
             return (

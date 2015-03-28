@@ -1,6 +1,4 @@
 define(function (){
-    var reactControl;
-
     function getForecastWithString (sURL, sPrevURL) {
         requestOkText(sURL).then(function (responseText) {
             var oJSON = JSON.parse(responseText),
@@ -52,9 +50,7 @@ define(function (){
         getForecastWithString(sURL);
     };
 
-    var showGraph = function(reactCon) {
-        reactControl = reactCon;
-
+    var showGraph = function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 showByGeolocation,
