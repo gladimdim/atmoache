@@ -41,8 +41,19 @@ button {
 }
 
 .div-diff {
-    text-align: center;
-    line-height: 3rem;
+  text-align: center;
+  line-height: 3rem;
+  -webkit-transition: all 0.1s ease-out 0s;
+  -moz-transition: all 0.1s ease-out 0s;
+  transition: all 0.1s ease-out 0s;
+}
+
+.div-diff:hover {
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+
 }
 
 .div-city {
@@ -85,4 +96,16 @@ button {
 
 progress:not([value]) {
 
+}
+
+.animate-enter, .animate-leave {
+  transition: 500ms ease-in all;
+  position: relative;
+  display: block;
+} 
+.animate-enter.animate-enter-active, .animate-leave {
+  left: 0;
+}
+.animate-leave.animate-leave-active, .animate-enter {
+  left: 500px;
 }

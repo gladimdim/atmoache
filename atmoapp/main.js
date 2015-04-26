@@ -6,7 +6,9 @@ app.controller("PressureController", function($scope) {
     $scope.pressures = [];
     $scope.invalidCity = "";
     $scope.info = {
-        cityName: null
+        cityName: null,
+        errorText: "",
+        errorOccurred: false
     };
     $scope.showCity = false;
     $scope.showProgress = true;
@@ -24,6 +26,8 @@ app.controller("PressureController", function($scope) {
     $scope.getAtmoClicked = function() {
         $scope.pressures = [];
         $scope.info.cityName = null;
+        $scope.info.errorOccurred = false;
+        $scope.info.errorText = "";
         showProgressBar();
         if ($scope.cityName && $scope.cityName !== "") {
             showByCity($scope.cityName);
@@ -158,8 +162,12 @@ app.controller("PressureController", function($scope) {
             }
             $scope.$digest();
         }).catch(function (error) {
+            $scope.info.errorOccurred = true;
+            $scope.info.errorText = error.message;
             console.log("Error while getting data: " + error);
+            $scope.$digest();
         }).finally(function () {
+            $scope.showInstallButton = false;
             hideProgressBar();
         }).done();
     };

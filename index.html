@@ -20,12 +20,15 @@
         </div>
         <button id="install-ff-button" ng-click='installMoz()' ng-show="showInstallButton">Install App</button>
         <div id="pressure">
-            <div ng-repeat="pressure in pressures" ng-style='pressure.colorStyle' class='div-diff'>
+            <div ng-repeat="pressure in pressures" ng-animate="'animate'" ng-style='pressure.colorStyle' class='div-diff'>
                 {{pressure.text | date: "MMMM EEE d"}} {{pressure.up}}
             </div>
             <div id='progressSection' ng-show="showProgress">
                 <div id='progressText'>Getting pressure for your location</div>
                 <progress id='progressbar'></progress>
+            </div>
+            <div ng-show="info.errorOccurred">
+              {{info.errorText}}
             </div>
         </div>
     <div class='contacts'>
