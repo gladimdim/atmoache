@@ -24,6 +24,8 @@ app.controller("PressureController", function($scope) {
     $scope.getAtmoClicked = function() {
         $scope.pressures = [];
         $scope.info.cityName = null;
+        $scope.info.errorOccurred = false;
+        $scope.info.errorText = "";
         showProgressBar();
         if ($scope.cityName && $scope.cityName !== "") {
             showByCity($scope.cityName);
@@ -158,8 +160,11 @@ app.controller("PressureController", function($scope) {
             }
             $scope.$digest();
         }).catch(function (error) {
+            $scope.info.errorText = "Could not connect to openweathermap server";
+            $scope.info.errorOccurred = true;
             console.log("Error while getting data: " + error);
         }).finally(function () {
+            $scope.showInstallButton = false;
             hideProgressBar();
         }).done();
     };
