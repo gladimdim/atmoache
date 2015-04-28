@@ -1,5 +1,10 @@
 define(function (){
-    function getForecastWithString (sURL, sPrevURL) {
+    var bFirstStart = true;
+    var firstDeferred = Q.defer();
+    function getForecastWithString (sURL) {
+        var deferred = bFirstStart ? firstDeferred : Q.defer();
+        bFirstStart = false;
+        console.log("Getting for url: " + sURL);
         requestOkText(sURL).then(function (responseText) {
             var oJSON = JSON.parse(responseText),
             i,
@@ -23,31 +28,30 @@ define(function (){
                     }
                 });
             }
-
-            React.render(<MainContent data={finalArray}/>,
-                document.getElementById("content")
-            );
+            console.log(oJSON.city.name);
+            deferred.resolve([finalArray, oJSON.city.name]);
         }).catch(function (error) {
-            console.log("Error while getting data: " + error);
+            console.log("Error while getting data. " + error);
         }).finally(function () {
         }).done();
+        return deferred.promise;
     };
 
 
     function handleRejection() {
         console.log('rejected geolocation');
-        showByCity("Kiev");
+        return showByCity("Kiev");
     };
 
     function showByGeolocation(geolocation) {
         var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=7&mode=json";
-        getForecastWithString(sURL);
         console.log("showed url: " + sURL);
+        return getForecastWithString(sURL);
     };
 
     function showByCity(sCity) {
         var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + sCity + "&cnt=7&mode=json";
-        getForecastWithString(sURL);
+        return getForecastWithString(sURL);
     };
 
     var showGraph = function() {
@@ -63,6 +67,9 @@ define(function (){
         } else {
             handleRejection();
         }
+
+        return firstDeferred.promise;
+
     };
 
     function requestOkText(url) {

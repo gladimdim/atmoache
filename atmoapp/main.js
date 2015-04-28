@@ -6,18 +6,16 @@ define(function (require) {
 
     var DaysList = React.createClass({
         render: function() {
-            var commentNodes = this.props.data.map(function (comment) {
-                var date = new Date(comment.date);
-
+            var pressureNodes = this.props.data.map(function (pressureRecord) {
+                var date = new Date(pressureRecord.date);
                 return (
-                <PressureDay data={comment} date={date}>
-
-                </PressureDay>
+                    <PressureDay data={pressureRecord} date={date}>
+                    </PressureDay>
                 );
             });
             return (
                 <div className="daysList">
-                {commentNodes}
+                    {pressureNodes}
                 </div>
             );
         }
@@ -35,7 +33,10 @@ define(function (require) {
 
     var CityForm = React.createClass({
         handleClick: function(e) {
-            utils.showByCity(this.props.city);
+            var that = this;
+            utils.showByCity(this.props.city).then(function(aArray) {
+                mainContent.setProps({data: aArray[0], city: aArray[1]});
+            });
         },
         handleCityChange: function(e) {
             this.props.city = e.target.value;
@@ -57,14 +58,19 @@ define(function (require) {
         render: function() {
             return (
                 <div className = 'MainContent'>
-                <CityForm/>
-                <DaysList data={this.props.data}/>
-
+                    <CityForm city={this.props.city}/>
+                    <DaysList data={this.props.data}/>
                 </div>
             );
         }
     });
 
+    var mainContent = React.render(
+            <MainContent data={[]}/>,
+            document.getElementById("content")
+        ); 
 
-    utils.showGraph();
+    utils.showGraph().then(function(aArray) {
+        mainContent.setProps({data: aArray[0], city: aArray[1]});
+    });
 });
