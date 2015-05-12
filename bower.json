@@ -1,0 +1,25 @@
+{
+  "name": "atmoache",
+  "version": "1.0.0",
+  "homepage": "https://github.com/gladimdim/atmoache",
+  "authors": [
+    "Dmytro Gladkyi"
+  ],
+  "description": "Atmospheric pressure graph for next 6 days",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "library",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5"
+  }
+}

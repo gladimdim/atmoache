@@ -1,7 +1,7 @@
 requirejs.config({
     baseUrl: 'lib',
     paths: {
-    	atmoapp: "../build",
+    	atmoapp: "../atmoapp",
     }
 });
 

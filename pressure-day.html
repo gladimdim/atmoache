@@ -1,0 +1,21 @@
+<link rel="import" href="../library/polymer/polymer.html">
+
+<polymer-element name="pressure-day" attributes="date arrow color">
+    <template>
+        <style>
+            .div-diff {
+                text-align: center;
+                line-height: 3rem;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                width: 100%;
+            }
+        </style>
+        <div class='div-diff' style="background-color: {{color}}">
+            {{date}} {{arrow}}</b>
+        </div>
+    </template>
+    <script>
+        Polymer();
+    </script>
+   
+</polymer-element>

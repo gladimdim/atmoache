@@ -1,60 +1,54 @@
 define(function (){
-    var reactControl;
-
+    var globalDefer;
     function getForecastWithString (sURL, sPrevURL) {
         requestOkText(sURL).then(function (responseText) {
             var oJSON = JSON.parse(responseText),
-            i,
-            aDiffs,
-            currentDate = new Date(),
-            directionArrow,
-            color,
-            aDates;
+                i,
+                aDiffs,
+                currentDate = new Date(),
+                directionArrow,
+                aDates;
 
             aDiffs = calculateDifferences(oJSON.list);
             aDates = getDatesFromResponse(oJSON.list);
             var finalArray = [];
             for (i = 0; i < aDiffs.length; i = i + 1) {
                 directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
-                color = colorForDiff(Math.abs(aDiffs[i]));
                 finalArray.push({
-                    text: aDates[i] * 1000,
-                    up: directionArrow,
-                    colorStyle: {
-                        'background-color': "rgb(" + color + ")"
-                    }
+                    date: new Date(aDates[i] * 1000).toLocaleString(),
+                    arrow: directionArrow,
+                    color: "rgb(" + colorForDiff(Math.abs(aDiffs[i])) + ")"
                 });
             }
-
-            React.render(<MainContent data={finalArray}/>,
-                document.getElementById("content")
-            );
+            globalDefer.resolve([oJSON.city.name, finalArray]);
         }).catch(function (error) {
             console.log("Error while getting data: " + error);
         }).finally(function () {
         }).done();
-    };
+
+        return globalDefer.promise;
+    }
 
 
     function handleRejection() {
         console.log('rejected geolocation');
         showByCity("Kiev");
-    };
+    }
 
     function showByGeolocation(geolocation) {
         var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=7&mode=json";
         getForecastWithString(sURL);
         console.log("showed url: " + sURL);
-    };
+    }
 
     function showByCity(sCity) {
+        globalDefer = Q.defer();
         var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + sCity + "&cnt=7&mode=json";
-        getForecastWithString(sURL);
-    };
+        return getForecastWithString(sURL);
+    }
 
-    var showGraph = function(reactCon) {
-        reactControl = reactCon;
-
+    var showGraph = function() {
+        globalDefer = Q.defer();
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 showByGeolocation,
@@ -67,6 +61,7 @@ define(function (){
         } else {
             handleRejection();
         }
+        return globalDefer.promise;
     };
 
     function requestOkText(url) {
@@ -94,7 +89,7 @@ define(function (){
         request.onprogress = onprogress;
         request.send();
         return deferred.promise;
-    };
+    }
 
     function colorForDiff(diff) {
         var red = 0.4588 + (1 - 0.4588) * diff / 10,
@@ -109,7 +104,7 @@ define(function (){
             blue = blue - (blue - 0.1216) * diff / 20;
         }
         return [(red * 255).toFixed(0), (green * 255).toFixed(0), (blue * 255).toFixed(0)];
-    };
+    }
 
     function calculateDifferences(aPressures) {
         var aReturn = [0], i, a, b;
@@ -119,7 +114,7 @@ define(function (){
             aReturn.push((a - b).toFixed(0));
         }
         return aReturn;
-    };
+    }
 
     function getDatesFromResponse(oResponse) {
         var a = [], i = 0;
@@ -127,13 +122,11 @@ define(function (){
             a.push(oResponse[i].dt);
         }
         return a;
-    };
+    }
 
-    return function(){
-        return {
-            showGraph: showGraph,
-            check: true
-        }
+    return {
+         showGraph: showGraph,
+         showByCity: showByCity
     };
 
 });
