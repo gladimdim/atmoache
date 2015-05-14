@@ -23,8 +23,8 @@ define(function (){
             globalDefer.resolve([oJSON.city.name, finalArray]);
         }).catch(function (error) {
             console.log("Error while getting data: " + error);
-        }).finally(function () {
-        }).done();
+            globalDefer.reject(error);
+        });
 
         return globalDefer.promise;
     }
