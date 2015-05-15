@@ -1,17 +1,19 @@
 <meta name="viewport" content="width=device-width" />
 <head>
   <title>Graph for atmospheric pressure changes</title>
-<link rel="stylesheet" type="text/css" href="./styles.css"/>
-<script src="./lib/q.min.js"></script>
-<script src="library/webcomponentsjs/webcomponents.min.js"></script>
-    <link rel="import" href="pressure-table.html">
-<script data-main="./app" src="./lib/require.js"></script>
+  <link rel="stylesheet" type="text/css" href="./styles.css"/>
+  <script src="./lib/q.min.js"></script>
+  <script src="library/webcomponentsjs/webcomponents.min.js"></script>
+  <link rel="import" href="pressure-table.html">
+  <link rel="import" href="/library/paper-button/paper-button.html">
+  <link rel="import" href="/library/paper-input/paper-input.html">
+  <script data-main="./app" src="./lib/require.js"></script>
 </head>
 <body>
     <div id="content">
         <div id='cityForm'>
-            <input type='text' id='cityText' placeholder='Type city name'/>
-            <button onclick="app.getAtmoClicked()">Get Atmo Graph</button>
+            <paper-input label="Enter City Name"></paper-input>
+            <paper-button raised id="buttonGet">Get Atmospheric Pressure</paper-button>
         </div>
         <div id='city' class='div-city'>
         </div>

@@ -10,27 +10,8 @@ input[type='text'] {
     min-width:150px;
 }
 
-input[type='text'].invalid-city {
-    background: rgb(200,127,118);
-}
-
-input[type='text'].invalid-city::-webkit-input-placeholder {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-input[type='text'].invalid-city::-moz-placeholder {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-button {
-    border: 2px solid black;
-    width: 15%;
-    height: 3rem;
-    font-size: 1rem;
-    -webkit-appearance: none;
-    -webkit-border-radius:0;
-    border-radius:0;
-    min-width: 150px;
+.invalid-city {
+    color: rgb(200,127,118);
 }
 
 #content {
