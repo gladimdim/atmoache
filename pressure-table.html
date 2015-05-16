@@ -1,0 +1,17 @@
+<link rel="import" href="../library/polymer/polymer.html">
+<link rel="import" href="./pressure-day.html">
+
+<polymer-element name="pressure-table" aPressureDays="{{aPressureDays}}">
+	<template>
+		<template repeat="{{pressureDay in aPressureDays}}">
+			<pressure-day date="{{pressureDay.date}}" arrow="{{pressureDay.arrow}}" color="{{pressureDay.color}}"></pressure-day>
+		</template>
+	</template>
+	<script>
+		Polymer({
+			created: function() {
+				this.aPressureDays = [];
+			}
+		});
+	</script>
+</polymer-element>

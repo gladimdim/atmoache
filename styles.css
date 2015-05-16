@@ -10,34 +10,14 @@ input[type='text'] {
     min-width:150px;
 }
 
-input[type='text'].invalid-city {
-  background: rgb(200,127,118);
-}
-
-input[type='text'].invalid-city::-webkit-input-placeholder {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-input[type='text'].invalid-city::-moz-placeholder {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-button {
-  border: 2px solid black;
-  width: 15%;
-  height: 3rem;
-  font-size: 1rem;
-  -webkit-appearance: none;
-  -webkit-border-radius:0;
-  border-radius:0;
-  min-width: 150px;
+.invalid-city {
+    color: rgb(200,127,118);
 }
 
 #content {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 100%;
-  height: 100%;
-  text-align: center;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    width: 100%;
+    text-align: center;
 }
 
 .div-diff {
@@ -61,11 +41,11 @@ button {
 
 @media screen and (max-device-width: 480px) {
     #body {
-    	height: 100%;
+        height: 100%;
     }
 
     .div-diff {
-    	height: 20%;
+        height: 20%;
     }
 
     input[type='button'] {
@@ -78,9 +58,9 @@ button {
 }
 
 .contacts {
-  font-size: 0.75rem;
-  text-align: right;
-  border-top: 1px solid black;
+    font-size: 0.75rem;
+    text-align: right;
+    border-top: 1px solid black;
 }
 
 progress:not([value]) {
