@@ -13,7 +13,8 @@ define(function (require) {
         initListeners: function() {
             document.querySelector("#buttonGet").addEventListener("click", function(e) {
                 document.getElementById("city").innerHTML = "";
-                Utils.showByCity(getCityInputField().value).then(updateDOM).catch(markInvalidCity);
+                debugger;
+                Utils.showByCity(app.getCityInputField().value).then(updateDOM).catch(markInvalidCity);
             });
         },
 
