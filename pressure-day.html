@@ -8,14 +8,29 @@
                 line-height: 3rem;
                 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
                 width: 100%;
+                font-size: 1.25rem;
             }
         </style>
-        <div class='div-diff' style="background-color: {{color}}" on-click="{{recordClicked}}">
+        <div class='div-diff' style="background-color: {{color}};" on-click="{{recordClicked}}">
             {{textToShow}} {{arrow}}</b>
         </div>
     </template>
     <script>
         Polymer({
+            colorChanged: function(oldValue, newValue) {
+                var animation = new CoreAnimation();
+                animation.duration = 2000;
+                animation.keyframes =[
+                    {"color": newValue},
+                    {"color": "black"}
+                ]; 
+                animation.fill = "forwards";
+                animation.target = this;
+                animation.play();
+                animation.onfinish = function() {
+                    console.log("lol");
+                }.bind(this);
+            },
             showingHelp: false,
             attached: function() {
                 this.textToShow = this.date;

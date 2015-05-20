@@ -22,6 +22,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5",
     "paper-button": "Polymer/paper-button#^0.5",
-    "paper-input": "Polymer/paper-input#^0.5"
+    "paper-input": "Polymer/paper-input#^0.5",
+    "core-animation": "Polymer/core-animation#~0.5.6"
   }
 }
