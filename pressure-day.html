@@ -1,6 +1,6 @@
 <link rel="import" href="../library/polymer/polymer.html">
 
-<polymer-element name="pressure-day" attributes="date arrow color">
+<polymer-element name="pressure-day" attributes="date arrow color changeValue">
     <template>
         <style>
             .div-diff {
@@ -10,12 +10,22 @@
                 width: 100%;
             }
         </style>
-        <div class='div-diff' style="background-color: {{color}}">
-            {{date}} {{arrow}}</b>
+        <div class='div-diff' style="background-color: {{color}}" on-click="{{recordClicked}}">
+            {{textToShow}} {{arrow}}</b>
         </div>
     </template>
     <script>
-        Polymer();
+        Polymer({
+            showingHelp: false,
+            attached: function() {
+                this.textToShow = this.date;
+            },
+            recordClicked: function() {
+                this.showingHelp = !this.showingHelp;
+                var prefixText = this.changeValue > 0 ? "Тиск понизиться на " : "Тиск підвищиться на ";
+                this.textToShow = this.showingHelp ? prefixText + Math.abs(this.changeValue) : this.date;
+            }
+        });
     </script>
    
 </polymer-element>

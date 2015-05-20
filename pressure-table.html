@@ -4,7 +4,7 @@
 <polymer-element name="pressure-table" aPressureDays="{{aPressureDays}}">
 	<template>
 		<template repeat="{{pressureDay in aPressureDays}}">
-			<pressure-day date="{{pressureDay.date}}" arrow="{{pressureDay.arrow}}" color="{{pressureDay.color}}"></pressure-day>
+			<pressure-day date="{{pressureDay.date}}" arrow="{{pressureDay.arrow}}" color="{{pressureDay.color}}" changeValue="{{pressureDay.changeValue}}"></pressure-day>
 		</template>
 	</template>
 	<script>

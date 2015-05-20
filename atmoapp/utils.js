@@ -15,9 +15,10 @@ define(function (){
             for (i = 0; i < aDiffs.length; i = i + 1) {
                 directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
                 finalArray.push({
-                    date: new Date(aDates[i] * 1000).toLocaleString(),
+                    date: new Date(aDates[i] * 1000).toDateString(),
                     arrow: directionArrow,
-                    color: "rgb(" + colorForDiff(Math.abs(aDiffs[i])) + ")"
+                    color: "rgb(" + colorForDiff(Math.abs(aDiffs[i])) + ")",
+                    changeValue: aDiffs[i]
                 });
             }
             globalDefer.resolve([oJSON.city.name, finalArray]);

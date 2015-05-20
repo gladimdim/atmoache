@@ -13,7 +13,6 @@ define(function (require) {
         initListeners: function() {
             document.querySelector("#buttonGet").addEventListener("click", function(e) {
                 document.getElementById("city").innerHTML = "";
-                debugger;
                 Utils.showByCity(app.getCityInputField().value).then(updateDOM).catch(markInvalidCity);
             });
         },
@@ -26,9 +25,10 @@ define(function (require) {
     function updateDOM(response) {
         var pressureTable = app.getPressureTableElement();
         pressureTable.aPressureDays = response[1];
-        app.getStatusDiv().innerHTML = "Showing pressure for " + response[0];
+        app.getStatusDiv().innerHTML = "Дані по місту: " + response[0];
         app.getCityInputField().classList.remove("invalid-city");
     }
+
     function markInvalidCity(error) {
         app.getCityInputField().classList.add("invalid-city");
         var pressureTable = app.getPressureTableElement();
