@@ -26,17 +26,6 @@ function getForecastWithString (sURL, sPrevURL) {
     return promise;
 }
 
-function handleRejection() {
-    console.log('rejected geolocation');
-    showByCity("Kiev");
-}
-
-function showByGeolocation(geolocation) {
-    var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=7&mode=json";
-    console.log("used url: " + sURL);
-    return getForecastWithString(sURL);
-}
-
 export function showByCity(sCity) {
     var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + sCity + "&cnt=7&mode=json";
     return getForecastWithString(sURL);
@@ -55,6 +44,18 @@ export function showGraph() {
             );
         } else {
             handleRejection();
+        }
+
+        function handleRejection() {
+            console.log('rejected geolocation');
+            showByCity("Kiev");
+            reject("Geolocation was rejected by browser");
+        }
+
+        function showByGeolocation(geolocation) {
+            var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=7&mode=json";
+            console.log("used url: " + sURL);
+            resolve(getForecastWithString(sURL));
         }
     });
     return p2;
