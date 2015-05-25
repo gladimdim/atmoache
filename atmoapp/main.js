@@ -4,18 +4,15 @@ var app = {
     getCityInputField: function() {
         return document.getElementsByTagName("paper-input")[0];
     },
-
     getStatusDiv: function() {
         return document.getElementById("city");
     },
-
     initListeners: function() {
         document.querySelector("#buttonGet").addEventListener("click", function(e) {
             document.getElementById("city").innerHTML = "";
             showByCity(app.getCityInputField().value).then(updateDOM).catch(markInvalidCity);
         });
     },
-
     getPressureTableElement: function () {
         return document.getElementsByTagName("pressure-table")[0];
     }

@@ -3,14 +3,11 @@ function getForecastWithString (sURL, sPrevURL) {
         requestOkText(sURL).then(function (responseText) {
             var oJSON = JSON.parse(responseText),
                 i,
-                aDiffs,
+                aDiffs = calculateDifferences(oJSON.list),
                 currentDate = new Date(),
                 directionArrow,
-                aDates;
-
-            aDiffs = calculateDifferences(oJSON.list);
-            aDates = getDatesFromResponse(oJSON.list);
-            var finalArray = [];
+                aDates = getDatesFromResponse(oJSON.list),
+                finalArray = [];
             for (i = 0; i < aDiffs.length; i = i + 1) {
                 directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
                 finalArray.push({
@@ -87,8 +84,8 @@ function requestOkText(url) {
 
 function colorForDiff(diff) {
     var red = 0.4588 + (1 - 0.4588) * diff / 10,
-    green = 0.7020,
-    blue = 0.6078;
+        green = 0.7020,
+        blue = 0.6078;
 
     if (diff < 5) {
         green = green + (0.8 - green) * diff / 4;
