@@ -1,6 +1,6 @@
 <link rel="import" href="../library/polymer/polymer.html">
 
-<polymer-element name="pressure-day" attributes="date arrow color changeValue">
+<polymer-element name="pressure-day" attributes="date arrow color changeValue i18nService textPressureUp textPressureDown">
     <template>
         <style>
             .div-diff {
@@ -33,12 +33,17 @@
             },
             showingHelp: false,
             attached: function() {
-                this.textToShow = this.date;
+                var options = {"weekday": "long", "day": "numeric"};
+                var prefixText = this.changeValue > 0 ? this.textPressureDown : this.textPressureUp;
+                //user-friendly local version of date. Shown by default.
+                this.translatedDate = window.Intl ? Intl.DateTimeFormat(navigator.language, options).format(this.date) : this.date.toDateString();
+                //text shown when user presses element
+                this.backFlipText = prefixText + " " + Math.abs(this.changeValue);
+                this.textToShow = this.translatedDate;
             },
             recordClicked: function() {
-                this.showingHelp = !this.showingHelp;
-                var prefixText = this.changeValue > 0 ? "Тиск понизиться на " : "Тиск підвищиться на ";
-                this.textToShow = this.showingHelp ? prefixText + Math.abs(this.changeValue) : this.date;
+                this.showingHelp = !this.showingHelp;               
+                this.textToShow = this.showingHelp ? this.backFlipText : this.translatedDate;
             }
         });
     </script>

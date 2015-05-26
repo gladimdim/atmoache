@@ -1,5 +1,7 @@
 import {showGraph, showByCity} from "../atmoapp/utils";
+import {i18n} from "../atmoapp/i18n";
 
+var i18 = new i18n();
 var app = {
     getCityInputField: function() {
         return document.getElementsByTagName("paper-input")[0];
@@ -12,6 +14,7 @@ var app = {
             document.getElementById("city").innerHTML = "";
             showByCity(app.getCityInputField().value).then(updateDOM).catch(markInvalidCity);
         });
+        this.getPressureTableElement().i18nService = i18;
     },
     getPressureTableElement: function () {
         return document.getElementsByTagName("pressure-table")[0];
@@ -21,7 +24,7 @@ var app = {
 function updateDOM(response) {
     var pressureTable = app.getPressureTableElement();
     pressureTable.aPressureDays = response[1];
-    app.getStatusDiv().innerHTML = "Дані по місту: " + response[0];
+    app.getStatusDiv().innerHTML = i18.getTranslationForKey("lDataForCity") + response[0];
     app.getCityInputField().classList.remove("invalid-city");
 }
 
@@ -29,7 +32,7 @@ function markInvalidCity(error) {
     app.getCityInputField().classList.add("invalid-city");
     var pressureTable = app.getPressureTableElement();
     pressureTable.aPressureDays = [];
-    app.getStatusDiv().innerHTML = "Error occurred while getting data. Please check city name";
+    app.getStatusDiv().innerHTML = i18.getTranslationForKey("eCheckCityName");
 }
 
 app.initListeners();    

@@ -11,7 +11,7 @@ function getForecastWithString (sURL, sPrevURL) {
             for (i = 0; i < aDiffs.length; i = i + 1) {
                 directionArrow = aDiffs[i] > 0 ? '\u2193' : '\u2191';
                 finalArray.push({
-                    date: new Date(aDates[i] * 1000).toDateString(),
+                    date: new Date(aDates[i] * 1000),
                     arrow: directionArrow,
                     color: "rgb(" + colorForDiff(Math.abs(aDiffs[i])) + ")",
                     changeValue: aDiffs[i]
@@ -48,7 +48,7 @@ export function showGraph() {
 
         function handleRejection() {
             console.log('rejected geolocation');
-            showByCity("Kiev");
+            showByCity("Kiev"); //showing for default city
             reject("Geolocation was rejected by browser");
         }
 
