@@ -14,7 +14,6 @@ var app = {
             document.getElementById("city").innerHTML = "";
             showByCity(app.getCityInputField().value).then(updateDOM).catch(markInvalidCity);
         });
-        this.getPressureTableElement().i18nService = i18;
     },
     getPressureTableElement: function () {
         return document.getElementsByTagName("pressure-table")[0];
@@ -39,3 +38,4 @@ app.initListeners();
 
 showGraph().then(updateDOM).catch(markInvalidCity);
 window.app = app;
+window.i18 = i18;

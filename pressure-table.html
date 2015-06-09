@@ -1,23 +1,22 @@
-<link rel="import" href="../library/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="./pressure-day.html">
 
-<polymer-element name="pressure-table" aPressureDays="{{aPressureDays}}" i18nService>
-    <template>
-        <template repeat="{{pressureDay in aPressureDays}}">
-            <pressure-day date="{{pressureDay.date}}" arrow="{{pressureDay.arrow}}" color="{{pressureDay.color}}" changeValue="{{pressureDay.changeValue}}" i18nService="{{i18nService}}" textPressureUp="{{textPressureUp}}" textPressureDown="{{textPressureDown}}"></pressure-day>
-        </template>
+<dom-module id="pressure-table">
+<template>
+    <div> Yo
+    <template is="dom-repeat" items="{{aPressureDays}}">
+        <p>{{item.date}}</p>
     </template>
-    <script>
-        Polymer({
-            created: function() {
-                console.log("created");
-                this.aPressureDays = [];                
-            },
-            i18nServiceChanged: function(oldValue, newValue) {
-                console.log(this.i18nService);
-                this.textPressureUp = this.i18nService.getTranslationForKey("lPressureIncrease");
-                this.textPressureDown = this.i18nService.getTranslationForKey("lPressureDecrease");
+    </div>
+</template>
+</dom-module>
+<script>
+    Polymer({
+        is: "pressure-table",
+        properties: {
+            aPressureDays: {
+                type: Object
             }
-        });
-    </script>
-</polymer-element>
+        }
+    });
+</script>

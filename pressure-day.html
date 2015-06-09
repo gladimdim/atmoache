@@ -1,51 +1,17 @@
-<link rel="import" href="../library/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 
-<polymer-element name="pressure-day" attributes="date arrow color changeValue i18nService textPressureUp textPressureDown">
+<dom-module id="pressure-day">
     <template>
-        <style>
-            .div-diff {
-                text-align: center;
-                line-height: 3rem;
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                width: 100%;
-                font-size: 1.25rem;
-            }
-        </style>
-        <div class='div-diff' style="background-color: {{color}};" on-click="{{recordClicked}}">
-            {{textToShow}} {{arrow}}</b>
-        </div>
+        Day
     </template>
-    <script>
-        Polymer({
-            colorChanged: function(oldValue, newValue) {
-                var animation = new CoreAnimation();
-                animation.duration = 2000;
-                animation.keyframes =[
-                    {"color": newValue},
-                    {"color": "black"}
-                ]; 
-                animation.fill = "forwards";
-                animation.target = this;
-                animation.play();
-                animation.onfinish = function() {
-                    console.log("lol");
-                }.bind(this);
-            },
-            showingHelp: false,
-            attached: function() {
-                var options = {"weekday": "long", "day": "numeric"};
-                var prefixText = this.changeValue > 0 ? this.textPressureDown : this.textPressureUp;
-                //user-friendly local version of date. Shown by default.
-                this.translatedDate = window.Intl ? Intl.DateTimeFormat(navigator.language, options).format(this.date) : this.date.toDateString();
-                //text shown when user presses element
-                this.backFlipText = prefixText + " " + Math.abs(this.changeValue);
-                this.textToShow = this.translatedDate;
-            },
-            recordClicked: function() {
-                this.showingHelp = !this.showingHelp;               
-                this.textToShow = this.showingHelp ? this.backFlipText : this.translatedDate;
+</dom-module>
+<script>
+    Polymer(
+        is: "pressure-day",
+        properties: {
+            yo: {
+                type: Object
             }
-        });
-    </script>
-   
-</polymer-element>
+        }
+    });
+</script>
