@@ -2,10 +2,21 @@
 <link rel="import" href="./pressure-day.html">
 
 <dom-module id="pressure-table">
+    <style>
+        .div-diff {
+            text-align: center;
+            line-height: 3rem;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            width: 100%;
+            font-size: 1.25rem;
+        }
+    </style>
 <template>
-    <div> Yo
+    <div>
     <template is="dom-repeat" items="{{aPressureDays}}">
-        <p>{{item.date}}</p>
+        <div class='div-diff' style="{{computeColor(item.color)}}">
+            <div>{{computeText(item)}}</div>
+        <div>
     </template>
     </div>
 </template>
@@ -15,8 +26,18 @@
         is: "pressure-table",
         properties: {
             aPressureDays: {
-                type: Object
+                type: Array
             }
+        },
+        computeColor: function(str) {
+            console.log("background-color: " + str + ";");
+            return "background-color: " + str + ";";
+        },
+        computeText: function(item) {
+            var options = {"weekday": "long", "day": "numeric"};
+            var translatedDate = window.Intl ? Intl.DateTimeFormat(navigator.language, options).format(item.date) : item.date.toDateString();
+
+            return translatedDate + " " + item.arrow;
         }
     });
 </script>
