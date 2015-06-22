@@ -1,17 +1,26 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-
 <dom-module id="pressure-day">
+    <style>
+        .div-diff {
+            text-align: center;
+            line-height: 3rem;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            width: 100%;
+            font-size: 1.25rem;
+        }
+    </style>
     <template>
-        Day
+        <div class="div-diff" style="{{color}}">
+        <span>{{text}}</span>
+        </div>
     </template>
 </dom-module>
 <script>
-    Polymer(
+    Polymer({
         is: "pressure-day",
         properties: {
-            yo: {
-                type: Object
-            }
+            color: String,
+            text: String
         }
     });
 </script>

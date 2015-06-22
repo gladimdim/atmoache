@@ -14,9 +14,8 @@
 <template>
     <div>
     <template is="dom-repeat" items="{{aPressureDays}}">
-        <div class='div-diff' style="{{computeColor(item.color)}}">
-            <div>{{computeText(item)}}</div>
-        <div>
+        <pressure-day text="{{computeText(item)}}" color="{{computeColor(item.color)}}">
+        </pressure-day>
     </template>
     </div>
 </template>
@@ -29,14 +28,12 @@
                 type: Array
             }
         },
-        computeColor: function(str) {
-            console.log("background-color: " + str + ";");
-            return "background-color: " + str + ";";
+        computeColor: function(sColor) {
+            return "background-color: " + sColor + ";";
         },
         computeText: function(item) {
             var options = {"weekday": "long", "day": "numeric"};
             var translatedDate = window.Intl ? Intl.DateTimeFormat(navigator.language, options).format(item.date) : item.date.toDateString();
-
             return translatedDate + " " + item.arrow;
         }
     });
