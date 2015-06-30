@@ -6,6 +6,7 @@
     <link rel="import" href="pressure-table.html">
     <link rel="import" href="./bower_components/paper-button/paper-button.html">
     <link rel="import" href="./bower_components/paper-input/paper-input.html">
+    <link rel="import" href="./bower_components/paper-progress/paper-progress.html">
     <script data-main="./app" src="./lib/require.js"></script>
 </head>
 <body unresolved>
@@ -14,6 +15,7 @@
             <paper-input label="Enter City Name"></paper-input>
             <paper-button raised id="buttonGet">Get Atmospheric Graph</paper-button>
         </div>
+        <paper-progress indeterminate="true"></paper-progress>
         <div id='city' class='div-city'>
         </div>
         <pressure-table></pressure-table>

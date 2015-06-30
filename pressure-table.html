@@ -14,7 +14,7 @@
 <template>
     <div>
     <template is="dom-repeat" items="{{aPressureDays}}">
-        <pressure-day text="{{computeText(item)}}" color="{{computeColor(item.color)}}">
+        <pressure-day text="{{computeText(item)}}" color="{{computeColor(item.color)}}" entry-animation="slide-from-left-animation">
         </pressure-day>
     </template>
     </div>

@@ -11,12 +11,16 @@ var app = {
     },
     initListeners: function() {
         document.querySelector("#buttonGet").addEventListener("click", function(e) {
+            app.getProgressBarElement().classList.remove("hidden-element");
             document.getElementById("city").innerHTML = "";
             showByCity(app.getCityInputField().value).then(updateDOM).catch(markInvalidCity);
         });
     },
     getPressureTableElement: function () {
         return document.getElementsByTagName("pressure-table")[0];
+    },
+    getProgressBarElement: function() {
+        return document.querySelector("paper-progress");
     }
 };
 
@@ -25,6 +29,8 @@ function updateDOM(response) {
     pressureTable.aPressureDays = response[1];
     app.getStatusDiv().innerHTML = i18.getTranslationForKey("lDataForCity") + response[0];
     app.getCityInputField().classList.remove("invalid-city");
+    app.getProgressBarElement().classList.add("hidden-element");
+
 }
 
 function markInvalidCity(error) {
@@ -34,7 +40,7 @@ function markInvalidCity(error) {
     app.getStatusDiv().innerHTML = i18.getTranslationForKey("eCheckCityName");
 }
 
-app.initListeners();    
+app.initListeners();
 
 showGraph().then(updateDOM).catch(markInvalidCity);
 window.app = app;

@@ -58,6 +58,11 @@ input[type='text'] {
     border-top: 1px solid black;
 }
 
-progress:not([value]) {
+paper-progress {
+    width: 100%;
+    margin-top: 0.5rem;
+}
 
+.hidden-element {
+    display: none;
 }
