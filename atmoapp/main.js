@@ -35,7 +35,7 @@ function updateDOM(response) {
 
 function markInvalidCity(error) {
     app.getCityInputField().classList.add("invalid-city");
-    app.getPressureTableElement().classList.add("hidden-element");
+    app.getProgressBarElement().classList.add("hidden-element");
     var pressureTable = app.getPressureTableElement();
     pressureTable.aPressureDays = [];
     app.getStatusDiv().innerHTML = i18.getTranslationForKey("eCheckCityName");
