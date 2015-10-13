@@ -27,7 +27,7 @@ function getForecastWithString (sURL, sPrevURL) {
 }
 
 export function showByCity(sCity) {
-    var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + sCity + "&cnt=7&mode=json";
+    var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + sCity + "&cnt=7&mode=json&appid=e896545ab1632674c8cadbc58b500605";
     return getForecastWithString(sURL);
 }
 
@@ -53,7 +53,7 @@ export function showGraph() {
         }
 
         function showByGeolocation(geolocation) {
-            var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=7&mode=json";
+            var sURL = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + geolocation.coords.latitude + "&lon=" + geolocation.coords.longitude + "&cnt=7&mode=json&appid=e896545ab1632674c8cadbc58b500605";
             console.log("used url: " + sURL);
             resolve(getForecastWithString(sURL));
         }
