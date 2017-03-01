@@ -5,7 +5,8 @@
   ],
   "license": "https://polymer.github.io/LICENSE.txt",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.6.0"
+    "polymer": "Polymer/polymer#^1.6.0",
+    "paper-input": "PolymerElements/paper-input#^1.1.23"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
