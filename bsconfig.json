@@ -9,13 +9,15 @@
     "src"
   ],
   "package-specs": [{
-    "module": "commonjs",
+    "module": "es6",
     "in-source": true
   }],
   "suffix": ".bs.js",
   "namespace": true,
   "bs-dependencies": [
-    "reason-react"
+      "reason-react",
+      "bs-fetch",
+      "bs-json"
   ],
   "refmt": 3
 }
