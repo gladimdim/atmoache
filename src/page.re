@@ -29,14 +29,13 @@ module Decode = {
     );
 };
 
-let make = (~message, children) => {
+let make = (~message, _) => {
   ...component,
   initialState: () => {cityName: "Kyiv", pressures: []},
   reducer: (action, state) =>
     switch action {
     | PressureLoaded(pressures) =>
-      Js.log("Loaded: " ++ string_of_int(List.length(pressures)));
-      ReasonReact.Update({pressures, cityName: state.cityName});
+      ReasonReact.Update({pressures, cityName: state.cityName})
     | LoadPressure =>
       ReasonReact.SideEffects(
         (
@@ -81,6 +80,22 @@ let make = (~message, children) => {
       <button onClick=(_event => self.send(LoadPressure))>
         (ReasonReact.stringToElement("Get Atmopressure"))
       </button>
+      <div>
+        (
+          self.state.pressures
+          |> List.mapi((index, pressure) =>
+               <div key=(string_of_int(index))>
+                 (
+                   ReasonReact.stringToElement(
+                     string_of_float(pressure.pressure)
+                   )
+                 )
+               </div>
+             )
+          |> Array.of_list
+          |> ReasonReact.arrayToElement
+        )
+      </div>
     </div>;
   }
 };
