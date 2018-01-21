@@ -9,6 +9,7 @@ type state = {
 
 type action =
   | PressureLoaded(tListPressures)
+  | UpdateCity(string)
   | LoadPressure;
 
 let component = ReasonReact.reducerComponent("Page");
@@ -29,11 +30,16 @@ module Decode = {
     );
 };
 
-let make = (~message, _) => {
+let make = (_) => {
   ...component,
   initialState: () => {cityName: "Kyiv", pressures: []},
   reducer: (action, state) =>
     switch action {
+    | UpdateCity(s) =>
+      ReasonReact.UpdateWithSideEffects(
+        {...state, cityName: s},
+        (self => self.send(LoadPressure))
+      )
     | PressureLoaded(pressures) =>
       ReasonReact.Update({pressures, cityName: state.cityName})
     | LoadPressure =>
@@ -65,21 +71,9 @@ let make = (~message, _) => {
         )
       )
     },
-  render: self => {
-    Js.log("LOL");
+  render: self =>
     <div>
-      <div>
-        (
-          ReasonReact.stringToElement(
-            message
-            ++ "HAHA"
-            ++ string_of_int(List.length(self.state.pressures))
-          )
-        )
-      </div>
-      <button onClick=(_event => self.send(LoadPressure))>
-        (ReasonReact.stringToElement("Get Atmopressure"))
-      </button>
+      <Controls onCitySet=(newCity => self.send(UpdateCity(newCity))) />
       <div>
         (
           self.state.pressures
@@ -96,6 +90,8 @@ let make = (~message, _) => {
           |> ReasonReact.arrayToElement
         )
       </div>
-    </div>;
-  }
+    </div>
+  /* <button onClick=(_event => self.send(LoadPressure))>
+       (ReasonReact.stringToElement("Get Atmopressure"))
+     </button> */
 };
