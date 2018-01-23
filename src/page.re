@@ -40,6 +40,13 @@ let calc = (t: tListPressures) : array(float) =>
     t
   );
 
+let dropFirst = input =>
+  if (Array.length(input) > 0) {
+    Array.sub(input, 1, Array.length(input) - 1);
+  } else {
+    input;
+  };
+
 let make = (_) => {
   ...component,
   initialState: () => {cityName: "Kyiv", pressures: [||]},
@@ -87,10 +94,9 @@ let make = (_) => {
       <div className="mui-container">
         (
           calc(self.state.pressures)
+          |> dropFirst
           |> Array.mapi((index, pressure) =>
-               <div key=(string_of_int(index))>
-                 (ReasonReact.stringToElement(string_of_float(pressure)))
-               </div>
+               <PressureItem key=(string_of_int(index)) pressure />
              )
           |> ReasonReact.arrayToElement
         )
