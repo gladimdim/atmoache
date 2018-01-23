@@ -14,19 +14,27 @@ let make = (~onCitySet, _children) => {
     },
   render: self =>
     <div>
-      <input
-        _type="text"
-        value=self.state.cityName
-        onChange=(
-          event =>
-            self.send(
-              CityNameChanged(
-                ReactDOMRe.domElementToObj(ReactEventRe.Form.target(event))##value
-              )
+      <form className="mui-form">
+        <legend> (ReasonReact.stringToElement("City Name")) </legend>
+        <div className="mui-textfield">
+          <input
+            _type="text"
+            value=self.state.cityName
+            placeholder="Enter City Name"
+            onChange=(
+              event =>
+                self.send(
+                  CityNameChanged(
+                    ReactDOMRe.domElementToObj(ReactEventRe.Form.target(event))##value
+                  )
+                )
             )
-        )
-      />
-      <button onClick=((_) => onCitySet(self.state.cityName))>
+          />
+        </div>
+      </form>
+      <button
+        className="mui-btn mui-btn--raised"
+        onClick=((_) => onCitySet(self.state.cityName))>
         (ReasonReact.stringToElement("Get Atmo"))
       </button>
     </div>

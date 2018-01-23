@@ -1,6 +1,6 @@
 type tPressure = {pressure: float};
 
-type tListPressures = list(tPressure);
+type tListPressures = array(tPressure);
 
 type state = {
   cityName: string,
@@ -22,17 +22,27 @@ module Decode = {
   let pressure = jsonPressure : tPressure => {
     pressure: jsonPressure |> Json.Decode.field("pressure", Json.Decode.float)
   };
-  let listArray = json => json |> Json.Decode.list(pressure);
+  let listArray = json => json |> Json.Decode.array(pressure);
   let pressures = json : tListPressures =>
-    List.map(
+    Array.map(
       pressure => pressure,
       Json.Decode.{press: json |> field("list", listArray)}.press
     );
 };
 
+let calc = (t: tListPressures) : array(float) =>
+  Array.mapi(
+    (index, _item) =>
+      switch index {
+      | 0 => 0.0
+      | _ => t[index].pressure -. t[index - 1].pressure
+      },
+    t
+  );
+
 let make = (_) => {
   ...component,
-  initialState: () => {cityName: "Kyiv", pressures: []},
+  initialState: () => {cityName: "Kyiv", pressures: [||]},
   reducer: (action, state) =>
     switch action {
     | UpdateCity(s) =>
@@ -59,8 +69,8 @@ let make = (_) => {
                    |> Decode.pressures
                    |> (
                      pressures => {
-                       List.iter(pressure => Js.log(pressure), pressures);
-                       Js.log(string_of_int(List.length(pressures)));
+                       Array.iter(pressure => Js.log(pressure), pressures);
+                       Js.log(string_of_int(Array.length(pressures)));
                        self.send(PressureLoaded(pressures)) |> ignore;
                        resolve(pressures);
                      }
@@ -74,24 +84,16 @@ let make = (_) => {
   render: self =>
     <div>
       <Controls onCitySet=(newCity => self.send(UpdateCity(newCity))) />
-      <div>
+      <div className="mui-container">
         (
-          self.state.pressures
-          |> List.mapi((index, pressure) =>
+          calc(self.state.pressures)
+          |> Array.mapi((index, pressure) =>
                <div key=(string_of_int(index))>
-                 (
-                   ReasonReact.stringToElement(
-                     string_of_float(pressure.pressure)
-                   )
-                 )
+                 (ReasonReact.stringToElement(string_of_float(pressure)))
                </div>
              )
-          |> Array.of_list
           |> ReasonReact.arrayToElement
         )
       </div>
     </div>
-  /* <button onClick=(_event => self.send(LoadPressure))>
-       (ReasonReact.stringToElement("Get Atmopressure"))
-     </button> */
 };
