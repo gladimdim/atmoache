@@ -10,10 +10,10 @@ let make = (~onCitySet, _children) => {
   initialState: () => {cityName: "Kyiv"},
   reducer: action =>
     switch action {
-    | CityNameChanged(s) => (state => ReasonReact.Update({cityName: s}))
+    | CityNameChanged(s) => (_state => ReasonReact.Update({cityName: s}))
     },
   render: self =>
-    <div>
+    <div className="div-container">
       <form className="mui-form">
         <legend> (ReasonReact.stringToElement("City Name")) </legend>
         <div className="mui-textfield">
@@ -33,7 +33,7 @@ let make = (~onCitySet, _children) => {
         </div>
       </form>
       <button
-        className="mui-btn mui-btn--raised"
+        className="mui-btn mui-btn--raised mui-btn--danger"
         onClick=((_) => onCitySet(self.state.cityName))>
         (ReasonReact.stringToElement("Get Atmo"))
       </button>

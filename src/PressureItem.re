@@ -23,12 +23,11 @@ let calculateDiff = (diff: float) : string => {
 let calculateStyle = (pressure: float) : ReactDOMRe.style =>
   ReactDOMRe.Style.make(~backgroundColor=calculateDiff(pressure), ());
 
-let make = (~pressure: float, _children) => {
+let make = (~pressure: float, ~date: string, _children) => {
   ...component,
-  render: _self => {
-    Js.log("Pressure: " ++ string_of_float(pressure));
-    <div style=(calculateStyle(Js_math.abs_float(pressure)))>
-      (ReasonReact.stringToElement(string_of_float(pressure)))
-    </div>;
-  }
+  render: _self =>
+    <div
+      className="div-diff" style=(calculateStyle(Js_math.abs_float(pressure)))>
+      (ReasonReact.stringToElement(date))
+    </div>
 };

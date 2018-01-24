@@ -47,6 +47,35 @@ let dropFirst = input =>
     input;
   };
 
+let indexToDate = (input: int) : string => {
+  let indexToDayName = input => {
+    let current = Js.Date.make();
+    let dayWeek = Js.Date.getDay(current) |> int_of_float;
+    let next = ref(dayWeek + input);
+    Js.log(next^);
+    if (next^ >= 7) {
+      next := next^ - 7;
+    } else {
+      next := next^;
+    };
+    switch next^ {
+    | 0 => "Sunday"
+    | 1 => "Monday"
+    | 2 => "Tuesday"
+    | 3 => "Wednesday"
+    | 4 => "Thursday"
+    | 5 => "Friday"
+    | 6 => "Saturday"
+    | _ => "Ha"
+    };
+  };
+  switch input {
+  | 0 => "Today"
+  | 1 => "Tomorrow"
+  | _ => indexToDayName(input)
+  };
+};
+
 let make = (_) => {
   ...component,
   initialState: () => {cityName: "Kyiv", pressures: [||]},
@@ -70,19 +99,16 @@ let make = (_) => {
                 ++ "&cnt=7&mode=json&appid=e896545ab1632674c8cadbc58b500605"
               )
               |> then_(Fetch.Response.json)
-              |> then_(json => {
-                   Js.log(json);
+              |> then_(json =>
                    json
                    |> Decode.pressures
                    |> (
                      pressures => {
-                       Array.iter(pressure => Js.log(pressure), pressures);
-                       Js.log(string_of_int(Array.length(pressures)));
                        self.send(PressureLoaded(pressures)) |> ignore;
                        resolve(pressures);
                      }
-                   );
-                 })
+                   )
+                 )
               |> ignore
             )
         )
@@ -96,7 +122,11 @@ let make = (_) => {
           calc(self.state.pressures)
           |> dropFirst
           |> Array.mapi((index, pressure) =>
-               <PressureItem key=(string_of_int(index)) pressure />
+               <PressureItem
+                 key=(string_of_int(index))
+                 pressure
+                 date=(indexToDate(index))
+               />
              )
           |> ReasonReact.arrayToElement
         )
