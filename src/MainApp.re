@@ -1,41 +1,38 @@
-type tPressure = {pressure: float};
+type tPressure = float;
 
-type tListPressures = array(tPressure);
+type tArrayPressures = array(tPressure);
 
 type state = {
   cityName: string,
-  pressures: tListPressures
+  pressures: tArrayPressures
 };
 
 type action =
-  | PressureLoaded(tListPressures)
+  | PressureLoaded(tArrayPressures)
   | UpdateCity(string)
   | LoadPressure;
 
-let component = ReasonReact.reducerComponent("Page");
+let component = ReasonReact.reducerComponent("MainApp");
 
-let handleClick = (_event, _self) => Js.log("clicked!");
-
-type tStrangeType = {press: tListPressures};
+type tStrangeType = {press: tArrayPressures};
 
 module Decode = {
-  let pressure = jsonPressure : tPressure => {
-    pressure: jsonPressure |> Json.Decode.field("pressure", Json.Decode.float)
-  };
+  let pressure = jsonPressure : tPressure =>
+    jsonPressure |> Json.Decode.field("pressure", Json.Decode.float);
   let listArray = json => json |> Json.Decode.array(pressure);
-  let pressures = json : tListPressures =>
+  let pressures = json : tArrayPressures =>
     Array.map(
       pressure => pressure,
       Json.Decode.{press: json |> field("list", listArray)}.press
     );
 };
 
-let calc = (t: tListPressures) : array(float) =>
+let calc = (t: tArrayPressures) : array(float) =>
   Array.mapi(
     (index, _item) =>
       switch index {
       | 0 => 0.0
-      | _ => t[index].pressure -. t[index - 1].pressure
+      | _ => t[index] -. t[index - 1]
       },
     t
   );
@@ -52,7 +49,6 @@ let indexToDate = (input: int) : string => {
     let current = Js.Date.make();
     let dayWeek = Js.Date.getDay(current) |> int_of_float;
     let next = ref(dayWeek + input);
-    Js.log(next^);
     if (next^ >= 7) {
       next := next^ - 7;
     } else {

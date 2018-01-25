@@ -35,7 +35,7 @@ let make = (~onCitySet, _children) => {
       <button
         className="mui-btn mui-btn--raised mui-btn--danger"
         onClick=((_) => onCitySet(self.state.cityName))>
-        (ReasonReact.stringToElement("Get Atmo"))
+        (ReasonReact.stringToElement("Get Pressure Changes"))
       </button>
     </div>
 };
