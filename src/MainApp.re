@@ -14,8 +14,6 @@ type action =
 
 let component = ReasonReact.reducerComponent("MainApp");
 
-type tStrangeType = {press: tArrayPressures};
-
 module Decode = {
   let pressure = jsonPressure : tPressure =>
     jsonPressure |> Json.Decode.field("pressure", Json.Decode.float);
@@ -23,7 +21,7 @@ module Decode = {
   let pressures = json : tArrayPressures =>
     Array.map(
       pressure => pressure,
-      Json.Decode.{press: json |> field("list", listArray)}.press
+      json |> Json.Decode.field("list", listArray)
     );
 };
 
@@ -62,7 +60,7 @@ let indexToDate = (input: int) : string => {
     | 4 => "Thursday"
     | 5 => "Friday"
     | 6 => "Saturday"
-    | _ => "Ha"
+    | _ => raise(Not_found)
     };
   };
   switch input {

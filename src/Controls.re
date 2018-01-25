@@ -15,12 +15,12 @@ let make = (~onCitySet, _children) => {
   render: self =>
     <div className="div-container">
       <form className="mui-form">
-        <legend> (ReasonReact.stringToElement("City Name")) </legend>
+        <legend> (ReasonReact.stringToElement("Enter City Name")) </legend>
         <div className="mui-textfield">
           <input
             _type="text"
             value=self.state.cityName
-            placeholder="Enter City Name"
+            placeholder="City Name"
             onChange=(
               event =>
                 self.send(
