@@ -4,11 +4,14 @@ type tArrayPressures = array(tPressure);
 
 type state = {
   cityName: string,
-  pressures: tArrayPressures
+  pressures: tArrayPressures,
+  failed: bool,
+  errorMessage: option(string)
 };
 
 type action =
   | PressureLoaded(tArrayPressures)
+  | FailedToGetCity(string, string)
   | UpdateCity(string)
   | LoadPressure;
 
@@ -23,6 +26,14 @@ module Decode = {
       pressure => pressure,
       json |> Json.Decode.field("list", listArray)
     );
+  let success = json => {
+    let result = Json.Decode.(json |> field("cod", string));
+    switch result {
+    | "200" => (true, "")
+    | "404" => (false, Json.Decode.(json |> field("message", string)))
+    | _ => raise(Not_found)
+    };
+  };
 };
 
 let calc = (t: tArrayPressures) : array(float) =>
@@ -72,7 +83,12 @@ let indexToDate = (input: int) : string => {
 
 let make = (_) => {
   ...component,
-  initialState: () => {cityName: "Kyiv", pressures: [||]},
+  initialState: () => {
+    cityName: "Kyiv",
+    pressures: [||],
+    failed: false,
+    errorMessage: None
+  },
   reducer: (action, state) =>
     switch action {
     | UpdateCity(s) =>
@@ -81,49 +97,80 @@ let make = (_) => {
         (self => self.send(LoadPressure))
       )
     | PressureLoaded(pressures) =>
-      ReasonReact.Update({pressures, cityName: state.cityName})
+      ReasonReact.Update({
+        pressures,
+        cityName: state.cityName,
+        failed: false,
+        errorMessage: None
+      })
     | LoadPressure =>
       ReasonReact.SideEffects(
         (
           self =>
-            Js.Promise.(
-              Fetch.fetch(
-                "http://api.openweathermap.org/data/2.5/forecast/daily?q="
-                ++ state.cityName
-                ++ "&cnt=7&mode=json&appid=e896545ab1632674c8cadbc58b500605"
-              )
-              |> then_(Fetch.Response.json)
-              |> then_(json =>
+            Fetch.fetch(
+              "http://api.openweathermap.org/data/2.5/forecast/daily?q="
+              ++ state.cityName
+              ++ "&cnt=7&mode=json&appid=e896545ab1632674c8cadbc58b500605"
+            )
+            |> Js.Promise.then_(Fetch.Response.json)
+            |> Js.Promise.then_(json => {
+                 let (cityFound, message) = Decode.success(json);
+                 if (cityFound) {
                    json
                    |> Decode.pressures
                    |> (
                      pressures => {
                        self.send(PressureLoaded(pressures)) |> ignore;
-                       resolve(pressures);
+                       Js.Promise.resolve(pressures);
                      }
-                   )
-                 )
-              |> ignore
-            )
+                   );
+                 } else {
+                   self.send(FailedToGetCity(message, self.state.cityName))
+                   |> ignore;
+                   Js.Promise.resolve([||]);
+                 };
+               })
+            |> ignore
         )
       )
+    | FailedToGetCity(sMessage, sCity) =>
+      ReasonReact.Update({
+        pressures: [||],
+        failed: true,
+        cityName: sCity,
+        errorMessage: Some(sMessage)
+      })
     },
   render: self =>
-    <div>
-      <Controls onCitySet=(newCity => self.send(UpdateCity(newCity))) />
-      <div className="mui-container">
-        (
-          calc(self.state.pressures)
-          |> dropFirst
-          |> Array.mapi((index, pressure) =>
-               <PressureItem
-                 key=(string_of_int(index))
-                 pressure
-                 date=(indexToDate(index))
-               />
-             )
-          |> ReasonReact.arrayToElement
-        )
+    switch self.state.errorMessage {
+    | Some(v) =>
+      <div>
+        <Controls onCitySet=(newCity => self.send(UpdateCity(newCity))) />
+        <div className="mui-panel mui--text-danger">
+          (
+            ReasonReact.stringToElement(
+              "Cannot find weather forecast, the error is: " ++ v
+            )
+          )
+        </div>
       </div>
-    </div>
+    | None =>
+      <div>
+        <Controls onCitySet=(newCity => self.send(UpdateCity(newCity))) />
+        <div className="mui-container">
+          (
+            calc(self.state.pressures)
+            |> dropFirst
+            |> Array.mapi((index, pressure) =>
+                 <PressureItem
+                   key=(string_of_int(index))
+                   pressure
+                   date=(indexToDate(index))
+                 />
+               )
+            |> ReasonReact.arrayToElement
+          )
+        </div>
+      </div>
+    }
 };
