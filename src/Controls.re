@@ -22,7 +22,7 @@ let make = (~onCitySet, ~cityName: string, _children) => {
     | CityNameChanged(s) => (_state => ReasonReact.Update({cityName: s}))
     },
   render: self =>
-    <div className="div-container">
+    <div className="div-container mui-container">
       <form className="mui-form">
         <legend> (ReasonReact.stringToElement("Enter City Name")) </legend>
         <div className="mui-textfield">
@@ -30,6 +30,7 @@ let make = (~onCitySet, ~cityName: string, _children) => {
             _type="text"
             value=self.state.cityName
             placeholder="City Name"
+            autofocus
             onChange=(
               event =>
                 self.send(
