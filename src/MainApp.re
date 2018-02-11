@@ -81,14 +81,23 @@ let indexToDate = (input: int) : string => {
   };
 };
 
+let firstUrl = ReasonReact.Router.dangerouslyGetInitialUrl().hash;
+
 let make = (_) => {
   ...component,
   initialState: () => {
-    cityName: "Kyiv",
+    cityName: firstUrl,
     pressures: [||],
     failed: false,
     errorMessage: None
   },
+  subscriptions: self => [
+    Sub(
+      () =>
+        ReasonReact.Router.watchUrl(url => self.send(UpdateCity(url.hash))),
+      ReasonReact.Router.unwatchUrl
+    )
+  ],
   reducer: (action, state) =>
     switch action {
     | UpdateCity(s) =>
@@ -145,7 +154,10 @@ let make = (_) => {
     switch self.state.errorMessage {
     | Some(v) =>
       <div>
-        <Controls onCitySet=(newCity => self.send(UpdateCity(newCity))) />
+        <Controls
+          onCitySet=(newCity => self.send(UpdateCity(newCity)))
+          cityName=self.state.cityName
+        />
         <div className="mui-panel mui--text-danger">
           (
             ReasonReact.stringToElement(
@@ -156,7 +168,10 @@ let make = (_) => {
       </div>
     | None =>
       <div>
-        <Controls onCitySet=(newCity => self.send(UpdateCity(newCity))) />
+        <Controls
+          onCitySet=(newCity => self.send(UpdateCity(newCity)))
+          cityName=self.state.cityName
+        />
         <div className="mui-container">
           (
             calc(self.state.pressures)

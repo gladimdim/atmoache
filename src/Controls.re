@@ -3,11 +3,20 @@ type state = {cityName: string};
 type action =
   | CityNameChanged(string);
 
-let component = ReasonReact.reducerComponent("Controls");
+let component = ReasonReact.reducerComponentWithRetainedProps("Controls");
 
-let make = (~onCitySet, _children) => {
+let make = (~onCitySet, ~cityName: string, _children) => {
   ...component,
-  initialState: () => {cityName: "Kyiv"},
+  initialState: () => {cityName: cityName},
+  retainedProps: {
+    cityName: cityName
+  },
+  didUpdate: ({newSelf, oldSelf}) => {
+    if (newSelf.retainedProps.cityName != oldSelf.retainedProps.cityName) {
+      newSelf.send(CityNameChanged(newSelf.retainedProps.cityName));
+    };
+    ();
+  },
   reducer: action =>
     switch action {
     | CityNameChanged(s) => (_state => ReasonReact.Update({cityName: s}))
