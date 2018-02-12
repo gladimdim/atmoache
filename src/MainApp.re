@@ -81,12 +81,10 @@ let indexToDate = (input: int) : string => {
   };
 };
 
-let firstUrl = ReasonReact.Router.dangerouslyGetInitialUrl().hash;
-
 let make = (_) => {
   ...component,
   initialState: () => {
-    cityName: firstUrl,
+    cityName: ReasonReact.Router.dangerouslyGetInitialUrl().hash,
     pressures: [||],
     failed: false,
     errorMessage: None
@@ -103,7 +101,14 @@ let make = (_) => {
     | UpdateCity(s) =>
       ReasonReact.UpdateWithSideEffects(
         {...state, cityName: s},
-        (self => self.send(LoadPressure))
+        (
+          self => {
+            if (s != self.state.cityName) {
+              ReasonReact.Router.push("/#" ++ s);
+            };
+            self.send(LoadPressure);
+          }
+        )
       )
     | PressureLoaded(pressures) =>
       ReasonReact.Update({

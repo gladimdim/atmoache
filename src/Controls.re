@@ -30,7 +30,7 @@ let make = (~onCitySet, ~cityName: string, _children) => {
             _type="text"
             value=self.state.cityName
             placeholder="City Name"
-            autofocus
+            autoFocus=Js.true_
             onChange=(
               event =>
                 self.send(
