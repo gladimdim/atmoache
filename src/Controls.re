@@ -23,7 +23,7 @@ let make = (~onCitySet, ~cityName: string, _children) => {
     },
   render: self =>
     <div className="div-container mui-container">
-      <form className="mui-form">
+      <div className="mui-form">
         <legend> (ReasonReact.stringToElement("Enter City Name")) </legend>
         <div className="mui-textfield">
           <input
@@ -39,13 +39,20 @@ let make = (~onCitySet, ~cityName: string, _children) => {
                   )
                 )
             )
+            onKeyPress=(
+              event =>
+                if (ReactEventRe.Keyboard.which(event) == 13) {
+                  onCitySet(self.state.cityName);
+                }
+            )
           />
         </div>
-      </form>
-      <button
-        className="mui-btn mui-btn--raised mui-btn--danger"
-        onClick=((_) => onCitySet(self.state.cityName))>
-        (ReasonReact.stringToElement("Get Pressure Changes"))
-      </button>
+        <button
+          _type="submit"
+          className="mui-btn mui-btn--raised mui-btn--danger"
+          onClick=((_) => onCitySet(self.state.cityName))>
+          (ReasonReact.stringToElement("Get Pressure Changes"))
+        </button>
+      </div>
     </div>
 };

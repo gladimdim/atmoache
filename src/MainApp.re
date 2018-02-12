@@ -102,12 +102,12 @@ let make = (_) => {
       ReasonReact.UpdateWithSideEffects(
         {...state, cityName: s},
         (
-          self => {
-            if (s != self.state.cityName) {
+          self =>
+            if (s != state.cityName) {
               ReasonReact.Router.push("/#" ++ s);
-            };
-            self.send(LoadPressure);
-          }
+            } else {
+              self.send(LoadPressure);
+            }
         )
       )
     | PressureLoaded(pressures) =>
