@@ -27,7 +27,8 @@ let make = (~pressure: float, ~date: string, _children) => {
   ...component,
   render: _self =>
     <div
-      className="div-diff" style=(calculateStyle(Js_math.abs_float(pressure)))>
-      (ReasonReact.stringToElement(date))
-    </div>
+      className="div-diff"
+      style=(calculateStyle(Js_math.abs_float(pressure)))>
+      (ReasonReact.string(date))
+    </div>,
 };

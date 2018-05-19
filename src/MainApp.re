@@ -6,7 +6,7 @@ type state = {
   cityName: string,
   pressures: tArrayPressures,
   failed: bool,
-  errorMessage: option(string)
+  errorMessage: option(string),
 };
 
 type action =
@@ -24,11 +24,11 @@ module Decode = {
   let pressures = json : tArrayPressures =>
     Array.map(
       pressure => pressure,
-      json |> Json.Decode.field("list", listArray)
+      json |> Json.Decode.field("list", listArray),
     );
   let success = json => {
     let result = Json.Decode.(json |> field("cod", string));
-    switch result {
+    switch (result) {
     | "200" => (true, "")
     | "404" => (false, Json.Decode.(json |> field("message", string)))
     | _ => raise(Not_found)
@@ -39,11 +39,11 @@ module Decode = {
 let calc = (t: tArrayPressures) : array(float) =>
   Array.mapi(
     (index, _item) =>
-      switch index {
+      switch (index) {
       | 0 => 0.0
       | _ => t[index] -. t[index - 1]
       },
-    t
+    t,
   );
 
 let dropFirst = input =>
@@ -63,7 +63,7 @@ let indexToDate = (input: int) : string => {
     } else {
       next := next^;
     };
-    switch next^ {
+    switch (next^) {
     | 0 => "Sunday"
     | 1 => "Monday"
     | 2 => "Tuesday"
@@ -74,7 +74,7 @@ let indexToDate = (input: int) : string => {
     | _ => raise(Not_found)
     };
   };
-  switch input {
+  switch (input) {
   | 0 => "Today"
   | 1 => "Tomorrow"
   | _ => indexToDayName(input)
@@ -87,17 +87,17 @@ let make = (_) => {
     cityName: ReasonReact.Router.dangerouslyGetInitialUrl().hash,
     pressures: [||],
     failed: false,
-    errorMessage: None
+    errorMessage: None,
   },
   subscriptions: self => [
     Sub(
       () =>
         ReasonReact.Router.watchUrl(url => self.send(UpdateCity(url.hash))),
-      ReasonReact.Router.unwatchUrl
-    )
+      ReasonReact.Router.unwatchUrl,
+    ),
   ],
   reducer: (action, state) =>
-    switch action {
+    switch (action) {
     | UpdateCity(s) =>
       ReasonReact.UpdateWithSideEffects(
         {...state, cityName: s},
@@ -108,14 +108,14 @@ let make = (_) => {
             } else {
               self.send(LoadPressure);
             }
-        )
+        ),
       )
     | PressureLoaded(pressures) =>
       ReasonReact.Update({
         pressures,
         cityName: state.cityName,
         failed: false,
-        errorMessage: None
+        errorMessage: None,
       })
     | LoadPressure =>
       ReasonReact.SideEffects(
@@ -124,7 +124,7 @@ let make = (_) => {
             Fetch.fetch(
               "http://api.openweathermap.org/data/2.5/forecast/daily?q="
               ++ state.cityName
-              ++ "&cnt=7&mode=json&appid=e896545ab1632674c8cadbc58b500605"
+              ++ "&cnt=7&mode=json&appid=e896545ab1632674c8cadbc58b500605",
             )
             |> Js.Promise.then_(Fetch.Response.json)
             |> Js.Promise.then_(json => {
@@ -145,18 +145,18 @@ let make = (_) => {
                  };
                })
             |> ignore
-        )
+        ),
       )
     | FailedToGetCity(sMessage, sCity) =>
       ReasonReact.Update({
         pressures: [||],
         failed: true,
         cityName: sCity,
-        errorMessage: Some(sMessage)
+        errorMessage: Some(sMessage),
       })
     },
   render: self =>
-    switch self.state.errorMessage {
+    switch (self.state.errorMessage) {
     | Some(v) =>
       <div>
         <Controls
@@ -165,8 +165,8 @@ let make = (_) => {
         />
         <div className="mui-panel mui--text-danger">
           (
-            ReasonReact.stringToElement(
-              "Cannot find weather forecast, the error is: " ++ v
+            ReasonReact.string(
+              "Cannot find weather forecast, the error is: " ++ v,
             )
           )
         </div>
@@ -188,9 +188,9 @@ let make = (_) => {
                    date=(indexToDate(index))
                  />
                )
-            |> ReasonReact.arrayToElement
+            |> ReasonReact.array
           )
         </div>
       </div>
-    }
+    },
 };

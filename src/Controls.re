@@ -9,7 +9,7 @@ let make = (~onCitySet, ~cityName: string, _children) => {
   ...component,
   initialState: () => {cityName: cityName},
   retainedProps: {
-    cityName: cityName
+    cityName: cityName,
   },
   didUpdate: ({newSelf, oldSelf}) => {
     if (newSelf.retainedProps.cityName != oldSelf.retainedProps.cityName) {
@@ -18,25 +18,27 @@ let make = (~onCitySet, ~cityName: string, _children) => {
     ();
   },
   reducer: action =>
-    switch action {
+    switch (action) {
     | CityNameChanged(s) => (_state => ReasonReact.Update({cityName: s}))
     },
   render: self =>
     <div className="div-container mui-container">
       <div className="mui-form">
-        <legend> (ReasonReact.stringToElement("Enter City Name")) </legend>
+        <legend> (ReasonReact.string("Enter City Name")) </legend>
         <div className="mui-textfield">
           <input
             _type="text"
             value=self.state.cityName
             placeholder="City Name"
-            autoFocus=Js.true_
+            autoFocus=true
             onChange=(
               event =>
                 self.send(
                   CityNameChanged(
-                    ReactDOMRe.domElementToObj(ReactEventRe.Form.target(event))##value
-                  )
+                    ReactDOMRe.domElementToObj(
+                      ReactEventRe.Form.target(event),
+                    )##value,
+                  ),
                 )
             )
             onKeyPress=(
@@ -51,8 +53,8 @@ let make = (~onCitySet, ~cityName: string, _children) => {
           _type="submit"
           className="mui-btn mui-btn--raised mui-btn--danger"
           onClick=((_) => onCitySet(self.state.cityName))>
-          (ReasonReact.stringToElement("Get Pressure Changes"))
+          (ReasonReact.string("Get Pressure Changes"))
         </button>
       </div>
-    </div>
+    </div>,
 };
