@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@glennsl/bs-json@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@glennsl/bs-json/-/bs-json-1.0.1.tgz#1b06cd5d7d5a5db3ca8cb2b69ae200d2af6184c2"
+"@glennsl/bs-json@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@glennsl/bs-json/-/bs-json-2.0.0.tgz#e621aac1e94d49bc12bf493b67c01c39e61a6415"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -1022,13 +1022,13 @@ browserify-zlib@^0.2.0:
   dependencies:
     pako "~1.0.5"
 
-bs-fetch@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/bs-fetch/-/bs-fetch-0.2.1.tgz#165bed867009f2e91efb959ca1c0ff940d8cd19a"
+bs-fetch@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/bs-fetch/-/bs-fetch-0.3.0.tgz#60c64457359d0c7e0798d5a04db8987d16c4f8f3"
 
-bs-platform@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-3.0.0.tgz#38f200730db52fdea37819376b6ac3dfb20244c0"
+bs-platform@3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-3.1.5.tgz#fb34ee4702bc9163848d5537096c4f31ebaeed40"
 
 buffer-from@^1.0.0:
   version "1.0.0"
@@ -3617,9 +3617,9 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
-reason-react@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/reason-react/-/reason-react-0.4.1.tgz#f1c8bf0d116be6bf43109912ee4d95e58dd7c64f"
+reason-react@0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/reason-react/-/reason-react-0.4.2.tgz#690d34e3e91a2585cdc5f58384b6c8ff653c32c1"
   dependencies:
     react ">=15.0.0 || >=16.0.0"
     react-dom ">=15.0.0 || >=16.0.0"

@@ -36,6 +36,10 @@ module Decode = {
   };
 };
 
+[@bs.val] external decodeUriParams : string => string = "decodeURIComponent";
+
+let decodeUriParams = input => decodeUriParams(input);
+
 let calc = (t: tArrayPressures) : array(float) =>
   Array.mapi(
     (index, _item) =>
@@ -81,10 +85,11 @@ let indexToDate = (input: int) : string => {
   };
 };
 
-let make = (_) => {
+let make = _ => {
   ...component,
   initialState: () => {
-    cityName: ReasonReact.Router.dangerouslyGetInitialUrl().hash,
+    cityName:
+      ReasonReact.Router.dangerouslyGetInitialUrl().hash |. decodeUriParams,
     pressures: [||],
     failed: false,
     errorMessage: None,
@@ -99,17 +104,18 @@ let make = (_) => {
   reducer: (action, state) =>
     switch (action) {
     | UpdateCity(s) =>
+      let dCity = s |. decodeUriParams;
       ReasonReact.UpdateWithSideEffects(
-        {...state, cityName: s},
+        {...state, cityName: dCity},
         (
           self =>
-            if (s != state.cityName) {
-              ReasonReact.Router.push("/#" ++ s);
+            if (dCity != state.cityName) {
+              ReasonReact.Router.push("/#" ++ dCity);
             } else {
               self.send(LoadPressure);
             }
         ),
-      )
+      );
     | PressureLoaded(pressures) =>
       ReasonReact.Update({
         pressures,
