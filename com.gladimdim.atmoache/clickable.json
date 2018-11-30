@@ -1,0 +1,7 @@
+{
+  "template": "pure",
+  "kill": "webapp-container",
+  "ignore": [
+    ".git"
+  ]
+}

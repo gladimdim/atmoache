@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Atmoache
+Exec=webapp-container --webappUrlPatterns=https?://www.atmoache.me/* https://www.atmoache.me
+Icon=favicon128.ico
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
