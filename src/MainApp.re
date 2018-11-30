@@ -94,13 +94,10 @@ let make = _ => {
     failed: false,
     errorMessage: None,
   },
-  subscriptions: self => [
-    Sub(
-      () =>
-        ReasonReact.Router.watchUrl(url => self.send(UpdateCity(url.hash))),
-      ReasonReact.Router.unwatchUrl,
-    ),
-  ],
+  didMount: self => {
+    let watcherId = ReasonReact.Router.watchUrl(url => self.send(UpdateCity(url.hash)));
+    self.onUnmount(() => ReasonReact.Router.unwatchUrl(watcherId));
+  },
   reducer: (action, state) =>
     switch (action) {
     | UpdateCity(s) =>
