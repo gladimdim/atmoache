@@ -125,7 +125,7 @@ let make = _ => {
         (
           self =>
             Fetch.fetch(
-              "http://api.openweathermap.org/data/2.5/forecast/daily?q="
+              "https://api.openweathermap.org/data/2.5/forecast/daily?q="
               ++ state.cityName
               ++ "&cnt=7&mode=json&appid=e896545ab1632674c8cadbc58b500605",
             )
