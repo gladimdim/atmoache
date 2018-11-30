@@ -27,7 +27,7 @@ let make = (~onCitySet, ~cityName: string, _children) => {
         <legend> (ReasonReact.string("Enter City Name")) </legend>
         <div className="mui-textfield">
           <input
-            _type="text"
+            type_="text"
             value=self.state.cityName
             placeholder="City Name"
             autoFocus=true
@@ -50,7 +50,7 @@ let make = (~onCitySet, ~cityName: string, _children) => {
           />
         </div>
         <button
-          _type="submit"
+          type_="submit"
           className="mui-btn mui-btn--raised mui-btn--danger"
           onClick=((_) => onCitySet(self.state.cityName))>
           (ReasonReact.string("Get Pressure Changes"))
